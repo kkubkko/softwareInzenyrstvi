@@ -1,0 +1,9 @@
+parameters:
+
+
+database:
+	dsn: "mysql:host=db4free.net;dbname=softwarko"
+	user: softwarko
+	password: kouzelnik
+	options:
+		lazy: yes
