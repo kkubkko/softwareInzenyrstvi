@@ -1,0 +1,27 @@
+{* Latte template *}
+
+{block content}
+
+<h1>Seznam projektu</h1>
+<table>
+    <thead>
+        <tr>
+            <td>ID</td>
+            <td>zakaznik</td>
+            <td>tym</td>
+            <td>etapa</td>
+            <td>editace</td>
+        </tr>
+    </thead>
+    <tbody>
+        {foreach $proj as $pr}
+            <tr>
+                <td>{$pr->ID}</td>
+                <td>{$pr->zakaznik->jmeno}</td>
+                <td>{$pr->tym->popis}</td>
+                <td>{$pr->etapa}</td>
+                <td>{$pr->dokument->posledni_editace}</td>
+            </tr>
+        {/foreach}    
+    </tbody>    
+</table>
