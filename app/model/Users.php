@@ -25,10 +25,16 @@ class Users extends Nette\Object{
 		
 		$data['heslo'] = Passwords::hash($data['heslo']);
 		
-		dump($data);
-		die();
-		
 		$this->database->table('Osoby')->insert($data);
 	}
 	
+	 public function listOfUsers()
+    {
+        $pom = $this->database->table('Osoby');
+        return $pom;
+    }
+	
+	public function deleteUser($id) {
+		$this->database->table('Osoby')->where('ID = ?', $id)->delete();
+	}
 }

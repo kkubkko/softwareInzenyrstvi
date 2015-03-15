@@ -19,7 +19,16 @@ class UsereditPresenter extends BasePresenter
 		
 	}
 
-	/**
+	public function renderUsersList(){
+        $this->template->users = $this->users->listOfUsers();
+    }
+	
+	public function actionDelete($id) {
+		$this->users->deleteUser($id);
+		$this->redirect('useredit:usersList');
+	}
+
+		/**
 	 * Add User form factory.
 	 * @return Nette\Application\UI\Form
 	 */
