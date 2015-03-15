@@ -5,7 +5,9 @@
  * @author Luky
  */
 namespace App\Model;
-use Nette;
+use Nette,
+    Nette\Utils\Strings,
+	Nette\Security\Passwords;        
 
         
 class Projects extends Nette\Object {
@@ -23,5 +25,19 @@ class Projects extends Nette\Object {
     {
         $pom = $this->database->table('Projekty');
         return $pom;
+    }
+    
+    public function vratHeslo($heslo)
+    {
+        return Passwords::hash($heslo);
+    }
+    
+    public function ulozLoginAheslo($jmeno, $login, $heslo)
+    {
+        $this->database->table('Osoby')->where('jmeno = ?', $jmeno)->update(
+                array(
+                    'login' => $login,
+                    'heslo' => $this->vratHeslo($heslo),
+                ));
     }
 }

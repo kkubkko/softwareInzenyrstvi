@@ -1,0 +1,61 @@
+{var $robots = noindex}
+
+{block head}
+    <link rel="stylesheet" href="{$basePath}/css/admin.css" />
+{/block}
+
+{block content}
+	<h1 n:block="title" style="display: none;"> Arboretum View </h1>
+  
+  <div class="container-fluid">
+    <div id="login">
+        <div class="login-wrapper" data-active="log">
+            <div id="log">
+                <div class="page-header">
+                    <h3 class="center"></h3>
+                    <h3 class="center"> Přihlášení </h3>
+                </div>
+                {form signInForm}
+                    {control $form errors}
+                    <tr>
+                        <td>{label login /}</td> <td>{input login}</td>
+                    </tr>
+                    <tr>
+                        <td>{label password /}</td> <td>{input password}</td>
+                    </tr>
+                    <tr>
+                        <td>{label remember /}</td> <td>{input remember}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"> {input send} </td>
+                    </tr>
+                {/form}
+                
+                
+                
+                {form signInForm}
+                    {control $form errors}
+                    <div class="row-fluid">
+                        <div class="control-group">
+                            <div class="controls-row">
+                                <div class="icon"><i class="icon20 i-key"></i></div>
+                                {input login}
+                            </div>
+                        </div><!-- End .control-group  -->
+                        <div class="control-group">
+                            <div class="controls-row">
+                                <div class="icon"><i class="icon20 i-key"></i></div>
+                                {input password}
+                            </div>
+                        </div><!-- End .control-group  -->
+                        <div class="full">
+                            {input send}
+                        </div>
+                    </div><!-- End .row-fluid  -->
+                {/form}
+            </div>
+        </div>
+    </div>
+</div>
+
+{/block}

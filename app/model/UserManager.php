@@ -13,10 +13,10 @@ use Nette,
 class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 {
 	const
-		TABLE_NAME = 'users',
-		COLUMN_ID = 'id',
-		COLUMN_NAME = 'username',
-		COLUMN_PASSWORD_HASH = 'password',
+		TABLE_NAME = 'Osoby',
+		COLUMN_ID = 'ID',
+		COLUMN_NAME = 'login',
+		COLUMN_PASSWORD_HASH = 'heslo',
 		COLUMN_ROLE = 'role';
 
 
@@ -55,7 +55,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 
 		$arr = $row->toArray();
 		unset($arr[self::COLUMN_PASSWORD_HASH]);
-		return new Nette\Security\Identity($row[self::COLUMN_ID], $row[self::COLUMN_ROLE], $arr);
+		return new Nette\Security\Identity($row[self::COLUMN_ID], /*$row[self::COLUMN_ROLE]*/'guest', $arr);
 	}
 
 

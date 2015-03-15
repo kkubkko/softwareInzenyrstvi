@@ -20,7 +20,7 @@ class SignPresenter extends BasePresenter
 	protected function createComponentSignInForm()
 	{
 		$form = new Nette\Application\UI\Form;
-		$form->addText('username', 'Username:')
+		$form->addText('login', 'Username:')
 			->setRequired('Please enter your username.');
 
 		$form->addPassword('password', 'Password:')
@@ -45,8 +45,9 @@ class SignPresenter extends BasePresenter
 		}
 
 		try {
-			$this->getUser()->login($values->username, $values->password);
+			$this->getUser()->login($values->login, $values->password);
 			$this->redirect('Homepage:');
+            //$this->redirect('Admin:default');
 
 		} catch (Nette\Security\AuthenticationException $e) {
 			$form->addError($e->getMessage());
@@ -58,7 +59,7 @@ class SignPresenter extends BasePresenter
 	{
 		$this->getUser()->logout();
 		$this->flashMessage('You have been signed out.');
-		$this->redirect('in');
+		//$this->redirect('in');
 	}
 
 }

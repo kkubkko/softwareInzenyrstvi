@@ -16,6 +16,10 @@ class ProjectPresenter extends BasePresenter {
 
 
     public function renderProjects(){
+        //$this->projekty->ulozLoginAheslo('Lukás Junek', 'Junek', 'Lukas');
+        //$this->projekty->ulozLoginAheslo('Kuba Kozák', 'Kozak', 'Jakub');
+        //$this->projekty->ulozLoginAheslo('Michal Šturma', 'Sturma', 'Michal');
         $this->template->proj = $this->projekty->seznamProjektu();
+        $this->template->heslo = $this->projekty->vratHeslo('Lukas');
     }
 }
