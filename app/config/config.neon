@@ -25,3 +25,5 @@ services:
 	- App\Model\UserManager
 	router: App\RouterFactory::createRouter
 	projects: App\Model\Projects
+	users: App\Model\Users
+	documents: App\Model\Documents
