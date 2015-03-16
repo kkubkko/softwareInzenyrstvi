@@ -17,7 +17,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 		COLUMN_ID = 'ID',
 		COLUMN_NAME = 'login',
 		COLUMN_PASSWORD_HASH = 'heslo',
-		COLUMN_ROLE = 'role';
+		COLUMN_ROLE = 'role_id';
 
 
 	/** @var Nette\Database\Context */
@@ -52,10 +52,32 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 				self::COLUMN_PASSWORD_HASH => Passwords::hash($password),
 			));
 		}
+                
+                /* zjištení všech rolí uživatele */
+                $rows2 = $this->database->table('prirazeniRole')->where('Osoby.login', $username)->fetchAll();
+                
+                if(!empty($rows2)){
+                    $first = TRUE;
+                    $vsechnyRole = '';
+                    foreach($rows2 as $row2){
+                        if($first){
+                            $vsechnyRole .= $row2['role_id'];
+                            $first = FALSE;
+                        } else{
+                            $vsechnyRole .= ',' . $row2;
+                        }
+                    }
+                } else
+                    throw new Nette\Security\AuthenticationException('Uživatel nemá žádnou roli.', self::NOT_APPROVED);
+                /* --------------------------- */
 
+                /*echo $vsechnyRole;
+                exit();*/
+                
 		$arr = $row->toArray();
 		unset($arr[self::COLUMN_PASSWORD_HASH]);
-		return new Nette\Security\Identity($row[self::COLUMN_ID], /*$row[self::COLUMN_ROLE]*/'guest', $arr);
+                unset($arr[self::COLUMN_ROLE]);
+		return new Nette\Security\Identity($row[self::COLUMN_ID], $vsechnyRole, $arr);
 	}
 
 
