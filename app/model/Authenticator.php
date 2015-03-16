@@ -18,6 +18,8 @@ $acl->addRole('projektant');
 
 
 
+
+
 // definujeme zdroje
 $acl->addResource('file'); // WTF
 
