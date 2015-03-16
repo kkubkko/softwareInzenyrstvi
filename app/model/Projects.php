@@ -73,7 +73,7 @@ class Projects extends Nette\Object {
     {
         $this->database->table('Osoby')->where('jmeno = ?', $jmeno)->update(
                 array(
-                    'login' => $login,
+                    'jmeno' => $jmeno,
                     'heslo' => $this->vratHeslo($heslo),
                 ));
     }

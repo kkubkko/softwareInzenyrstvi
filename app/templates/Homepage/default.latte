@@ -5,6 +5,15 @@
 	<h1 n:block=title>Congratulations!</h1>
 </div>
 
+<ul class="navig">
+    <li><a n:href="Homepage:">Homepage</a></li>
+    {if $user->loggedIn}
+        <li><a n:href="Sign:out">Odhlásit</a></li>
+    {else}
+        <li><a n:href="Sign:in">Přihlásit</a></li>
+    {/if}
+</ul>
+
 <div id="content">
 	<h2>You have successfully created your Nette Framework project.</h2>
 
