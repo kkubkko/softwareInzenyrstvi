@@ -3,6 +3,7 @@
 /*
  * IMPLEMENTOVANO:
  * vytvoreni dokumentu
+ * zruseni dokumentu - TODO ruseni verzi
  * vraceni nejvyssiho id dokumentu
  * vytvoreni pocatecni verze po vytvoreni dokumentu
  * pridani pozadavku do noveho dokumentu
@@ -26,16 +27,24 @@ class Documents extends Nette\Object {
     
     public function vytvorDokument()
     {
-        $this->database->table('Dokumenty')->insert(
+        $pom = $this->database->table('Dokumenty')->insert(
                 array(
                     'aktualni_verze'   => 0,
-                    'datum_zalozeni'   => time(),
-                    'posledni_editace' => time(),
-                ));        
+                    'datum_zalozeni'   => date('Y-m-d'),
+                    'posledni_editace' => date('Y-m-d'),
+                ));
+        return $pom->ID;
+    }
+ //------------------------------------------------------------------------------
+    
+    public function zrusitDokument($id_dokument)
+    {
+        // TODO zde se budou dale rusit verze...
+        $this->database->table('Dokumenty')->where('ID = ?', $id_dokument)->delete();
     }
 //------------------------------------------------------------------------------
     
-    public function vratPosledniIdDokumnetu()
+    public function vratMaxIdDokumnetu()
     {
         return $this->database->table('Dokumenty')->max('ID');
     }
@@ -48,7 +57,7 @@ class Documents extends Nette\Object {
                     'dokument_id'     => $id_dokumentu, 
                     'akt_etapa'       => 'zacatek',
                     'verze'           => 0,
-                    'datum_vytvoreni' => time(),
+                    'datum_vytvoreni' => date('Y-m-d'),
                 ));                
     }
 //------------------------------------------------------------------------------

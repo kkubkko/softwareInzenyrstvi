@@ -28,13 +28,33 @@ class Users extends Nette\Object{
 		$this->database->table('Osoby')->insert($data);
 	}
 	
-	 public function listOfUsers()
+	public function listOfUsers()
     {
         $pom = $this->database->table('Osoby');
         return $pom;
     }
-	
-	public function deleteUser($id) {
-		$this->database->table('Osoby')->where('ID = ?', $id)->delete();
+    
+    public function listOfCustomers()
+    {
+        return $this->listOfUsersWithRole('zákazník');
+    }
+    
+    public function listOfEmployes()
+    {
+        return $this->listOfUsersWithRole('zaměstnanec');
+    }
+    
+    public function  listOfUsersWithRole($role)
+    {
+        $pom = $this->database->query(
+                "SELECT a.ID,a.personal_cislo,a.jmeno,a.login FROM Osoby AS a "
+                ."JOIN prirazeniRole as b On a.ID = b.osoby_id JOIN Role as c "
+                ."ON b.role_id = c.ID WHERE c.nazev = '$role'"
+            );
+        return $pom;
+    }
+
+    public function deleteUser($id) {
+        $this->database->table('Osoby')->where('ID = ?', $id)->delete();
 	}
 }

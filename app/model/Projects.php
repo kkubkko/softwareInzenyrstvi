@@ -3,8 +3,9 @@
  * IMPLEMENTOVANO:
  * vraceni seznamu projektu
  * vytvoreni noveho projektu
- * editace tymu u projektu
- * editace zakaznika u projektu
+ * editace projetktu
+ * vraceni popisu projektu
+ * ruseni projektu
  * funkce, ktere edituji osobu - budou smazany!
  */
 namespace App\Model;
@@ -17,11 +18,14 @@ class Projects extends Nette\Object {
     
     /** @var Nette\Database\Context */
 	private $database;
+    /** @var Documents */
+    private $dokumenty;
 //------------------------------------------------------------------------------
 
-	public function __construct(Nette\Database\Context $database)
+	public function __construct(Nette\Database\Context $database, Documents $documents)
 	{
 		$this->database = $database;
+        $this->dokumenty = $documents;
 	}
 //------------------------------------------------------------------------------
     
@@ -32,8 +36,9 @@ class Projects extends Nette\Object {
     }
 //------------------------------------------------------------------------------
     
-    public function vytvoritProjekt($id_dokumentu, $id_zakaznika, $id_tymu, $popis)
+    public function vytvoritProjekt($id_zakaznika, $id_tymu, $popis)
     {
+        $id_dokumentu = $this->dokumenty->vytvorDokument();
         $this->database->table('Projekty')->insert(
                 array(
                     'zakaznik_id' =>$id_zakaznika,
@@ -45,21 +50,30 @@ class Projects extends Nette\Object {
     }
 //------------------------------------------------------------------------------
     
-    public function zmenitTym($id_projekt, $id_novy_tym)
+    public function zmenitProjekt($id_projekt, $id_novy_tym, $id_novy_zakaznik, $novy_popis)
     {
         $this->database->table('Projekty')->where('ID = ?', $id_projekt)->update(
                 array(
                     'tym_id' => $id_novy_tym,
+                    'zakaznik_id' => $id_novy_zakaznik,
+                    'popis' => $novy_popis,
                 ));        
     }
 //------------------------------------------------------------------------------
     
-    public function zmenitZakaznika($id_projekt, $id_novy_zakaznik)
+    public function vratPopisProjektu($id_projekt)
     {
-        $this->database->table('Projekty')->where('ID = ?', $id_projekt)->update(
-                array(
-                    'zakaznik_id' => $id_novy_zakaznik,
-                ));
+        $pom = $this->database->table('Projekty')->where('ID = ?', $id_projekt)->fetch();
+        return $pom->popis;
+    }
+ //------------------------------------------------------------------------------
+    
+    public function zrusitProjekt($id_projekt)
+    {
+        $pom = $this->database->table('Projekty')->where('ID = ?', $id_projekt)->fetch();
+        $pom2 = $pom->dokument_id;
+        $this->database->table('Projekty')->where('ID = ?', $id_projekt)->delete();
+        $this->dokumenty->zrusitDokument($pom2);        
     }
 //------------------------------------------------------------------------------
     

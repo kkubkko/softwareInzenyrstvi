@@ -9,6 +9,7 @@
             <td>ID</td>
             <td>zakaznik</td>
             <td>tym</td>
+            <td>popis projektu</td>
             <td>etapa</td>
             <td>editace</td>
             <td colspan="2">Akce</td>
@@ -20,10 +21,11 @@
                 <td>{$pr->ID}</td>
                 <td>{$pr->zakaznik->jmeno}</td>
                 <td>{$pr->tym->popis}</td>
+                <td>{$pr->popis}</td>
                 <td>{$pr->etapa}</td>
                 <td>{$pr->dokument->posledni_editace}</td>
-                <td><a href="{link Project:editProject, $pr->ID, false, $pr->zakaznik->ID}">edit zakaznika</a></td>
-                <td><a href="{link Project:editProject, $pr->ID, true, $pr->tym->ID}">edit tymu</a></td>
+                <td><a href="{link Project:editProject, $pr->ID, $pr->tym->ID, $pr->zakaznik->ID}">edit projektu</a></td>
+                <td><a href="{link delete!, $pr->ID}" onclick="return confirm('Smazat?')">smazat projekt</a></td>
             </tr>
         {/foreach}    
     </tbody> 
