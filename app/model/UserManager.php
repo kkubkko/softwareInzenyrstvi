@@ -22,6 +22,7 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 
 	/** @var Nette\Database\Context */
 	private $database;
+    private $role;
 
 
 	public function __construct(Nette\Database\Context $database)
@@ -53,31 +54,22 @@ class UserManager extends Nette\Object implements Nette\Security\IAuthenticator
 			));
 		}
                 
-                /* zjištení všech rolí uživatele */
-                $rows2 = $this->database->table('prirazeniRole')->where('Osoby.login', $username)->fetchAll();
+        /* zjištení všech rolí uživatele */
+        $rows2 = $this->database->table('prirazeniRole')->where('Osoby.login', $username);
                 
-                if(!empty($rows2)){
-                    $first = TRUE;
-                    $vsechnyRole = '';
-                    foreach($rows2 as $row2){
-                        if($first){
-                            $vsechnyRole .= $row2['role_id'];
-                            $first = FALSE;
-                        } else{
-                            $vsechnyRole .= ',' . $row2;
-                        }
-                    }
-                } else
-                    throw new Nette\Security\AuthenticationException('Uživatel nemá žádnou roli.', self::NOT_APPROVED);
-                /* --------------------------- */
-
-                /*echo $vsechnyRole;
-                exit();*/
-                
+        if(!empty($rows2)){
+            $pom_i = 0;
+            foreach($rows2 as $row2){
+                $this->role[$pom_i] = $row2->role->nazev;
+                $pom_i++;
+            }
+        } else {
+            throw new Nette\Security\AuthenticationException('Uživatel nemá žádnou roli.', self::NOT_APPROVED);
+        }      
 		$arr = $row->toArray();
 		unset($arr[self::COLUMN_PASSWORD_HASH]);
-                unset($arr[self::COLUMN_ROLE]);
-		return new Nette\Security\Identity($row[self::COLUMN_ID], $vsechnyRole, $arr);
+        unset($arr[self::COLUMN_ROLE]);
+		return new Nette\Security\Identity($row[self::COLUMN_ID], $this->role, $arr);
 	}
 
 
