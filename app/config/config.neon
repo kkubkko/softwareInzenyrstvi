@@ -27,3 +27,4 @@ services:
 	projects: App\Model\Projects
 	users: App\Model\Users
 	documents: App\Model\Documents
+	teams: App\Model\Teams

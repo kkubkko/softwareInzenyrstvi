@@ -1,0 +1,22 @@
+{* Latte template *}
+
+{block content}
+
+<h1 n:block=title>Seznam tymu</h1>
+
+<table>
+    <thead>
+        <td>ID</td>
+        <td>popis</td>
+        <td>datum zalozeni</td>
+        <td>clenove</td>
+    </thead>
+    <tbody>
+    {foreach $tymy as $tym}
+        <td>{$tym->ID}</td>
+        <td>{$tym->popis}</td>
+        <td>{$tym->datum_zalozeni}</td>
+        <td>{foreach $clenove[$tym->ID] as $clen}{$clen->osoba->jmeno}, {/foreach}</td>
+    {/foreach}    
+    </tbody>    
+</table>

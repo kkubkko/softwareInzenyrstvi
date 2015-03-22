@@ -88,6 +88,7 @@ class ProjectPresenter extends BasePresenter {
                 $this->database->rollBack();
                 $form->addError('Chyba pri praci s databazi, nepridalo se nic!');
             }
+            $this->flashMessage('Projekt byl uspesne pridan!');
         } else {
             try {
                 $this->database->beginTransaction();
@@ -97,6 +98,7 @@ class ProjectPresenter extends BasePresenter {
                 $this->database->rollBack();
                 $form->addError('Chyba pri praci s databazi, nepridalo se nic!');
             }
+            $this->flashMessage('Projekt byl uspesne editovan!');
         }
         $this->redirect('Project:projects');
     }
