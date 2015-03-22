@@ -2,22 +2,169 @@
 
 {block content}
 
-<h1 n:block=title>Seznam useru</h1>
-<table>
-    <thead>
-        <tr>
-            <td><b>jmeno</b></td>
-            <td><b>login</b></td>
-			<td></td>
-        </tr>
-    </thead>
-    <tbody>
-        {foreach $users as $user}
-            <tr>
-                <td>{$user->jmeno}</td>
-                <td>{$user->login}</td>
-				<td><a n:href="useredit:delete $user->ID">Smaz</a></td>
-            </tr>
-        {/foreach}    
-    </tbody> 
-</table>
+<header id="header" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <div class="nav-no-collapse">
+                <ul class="nav pull-right">
+                    <li class="divider-vertical"></li>
+                    <li class="dropdown user">
+                         <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
+                            <b>Username</b><!-- Doplnit jmeno přihlášeného usera  --> 
+                            <span class="more"><i class="icon16 i-arrow-down-2"></i></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li> <a href="users_edit.php?id_user=" class=""> <i class="icon16 i-king"></i> Nastavení</a></li> <!-- Doplnit id usera v href  --> 
+                            <li> <a href="logout.php" class=""> <i class="icon16 i-exit"></i> Logout</a> </li>
+                        </ul>
+                    </li>
+                    <li class="divider-vertical"></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</header> <!-- End #header  -->   
+
+
+
+
+
+
+<div class="main">
+ <aside id="sidebar">
+                <div class="side-options">
+                    <ul>
+                        <li><a href="#" id="collapse-nav" class="act act-primary tip" title="Collapse navigation"><i class="icon16 i-arrow-left-7"></i></a></li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-wrapper">
+                    <nav id="mainnav">
+                        <ul class="nav nav-list"> 
+                            <li>
+                                <a href="index.html">
+                                    <span class="icon"><i class="icon20   i-pencil-5"></i></span>
+                                    <span class="txt"> Domů </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="new_document.php">
+                                    <span class="icon"><i class="icon20  i-office"></i></span>
+                                    <span class="txt"> Vytvoření dokumentu </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="edit_document.php">
+                                    <span class="icon"><i class="icon20  i-tag"></i></span>
+                                    <span class="txt"> Editace dokumentu </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="users.html">
+                                    <span class="icon"><i class="icon20 i-user"></i></span>
+                                    <span class="txt"> Správa uživatelů </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav> <!-- End #mainnav -->
+                </div> <!-- End .sidebar-wrapper  -->
+            </aside><!-- End #sidebar  -->
+    <section id="content">
+        <div class="wrapper">
+            <div class="container-fluid">
+                <div id="heading" class="page-header">
+                    <h1><i class="icon20 i-users"></i> Operace s uživateli </h1>
+                </div>
+
+                        
+                          <div class="row-fluid">
+                            <div class="span12">
+                                <div class="widget">
+                                    <div class="widget-title">
+                                        <div class="icon"><i class="icon20 i-vcard"></i></div> 
+                                        <h4>Uživatelé</h4>
+                                        <a href="#" class="minimize"></a>
+
+                                    </div><!-- End .widget-title -->
+                                
+                                    <div class="widget-content">
+                                        <ul class="recent-users stripes">  
+           
+
+                                            {foreach $users as $user}
+                                            <li class="clearfix">
+                                                <span class="name">{$user->jmeno}</span>
+                                                <span class="name">Login: {$user->login}</span>
+                                                
+                                                <span class="name">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ROLE</span>
+                                                <div class="actions">
+                                                    <a n:href="useredit:delete $user->ID" class="act act-primary gap-right10"><i class="icon12 i-pencil gap-left0"></i>Smazat</a>
+                                                </div>    
+                                                    <span class="status tip" title="Administrator"><i class="icon20 i-king"></i></span>
+                                                
+                                            </li>
+                                            {/foreach} 
+                                        </ul>
+                                    </div><!-- End .widget-content -->
+                                </div><!-- End .widget -->
+                            </div><!-- End .span6  -->  
+                            
+                            
+
+                       </div>     
+                        <div class="row-fluid">
+                            
+                            <div class="span12">
+                            <div class="widget">
+                                <div class="widget-title">
+                                    <div class="icon"><i class="icon20 i-stack-checkmark"></i></div> 
+                                    <h4>Vytvořit uživatele</h4>
+                                    <a href="#" class="minimize"></a>
+                                </div><!-- End .widget-title -->
+                            
+                                <div class="widget-content">
+                                    <form method="post" id="validate" class="form-horizontal">
+                                        <div class="control-group">
+                                            <label class="control-label" for="required">Jméno</label>
+                                            <div class="controls controls-row">
+                                                <input type="text" id="username" name="username" class="required span12" minlength="5">
+                                            </div>
+                                        </div><!-- End .control-group  -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="password">Heslo</label>
+                                            <div class="controls controls-row">
+                                                <input type="password" id="password" name="password" class="password span12" minlength="5">
+                                            </div>
+                                        </div><!-- End .control-group  -->
+                                        <div class="control-group">
+                                            <label class="control-label" for="agree">Administrator</label>
+                                            <div class="controls controls-row">
+                                                <div class="span10">
+                                                    <label class="checkbox inline">
+                                                        <input type="checkbox" id="rights" name="rights">
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div><!-- End .control-group  -->
+                                        <div class="form-actions">
+                                            <button type="submit" class="btn btn-primary">Vytvořit</button>
+                                        </div>
+                                    </form>
+                                </div><!-- End .widget-content -->
+                            </div><!-- End .widget -->
+                        </div><!-- End .span12  --> 
+                        
+                        
+                        
+
+
+                    </div>
+         
+
+                </div><!-- End .row-fluid  -->
+
+            </div> <!-- End .container-fluid  -->
+        </div> <!-- End .wrapper  -->
+        
+        
+       

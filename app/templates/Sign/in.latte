@@ -1,6 +1,40 @@
 {block content}
-<h1 n:block=title>Přihlášení</h1>
 
-{control signInForm}
 
-{* or use {include '../components/form.latte', form => signInForm} *}
+<header id="header" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner"/>
+</header> <!-- End #header  -->   
+    
+<div class="container-fluid">
+    <div id="login">
+        <div class="login-wrapper" data-active="log">
+            <div id="log">
+                <div class="page-header">
+                    <h3 class="center"></h3>
+                    <h3 class="center"> Přihlášení </h3>
+                </div>
+                {form signInForm}
+                    {control $form errors}
+                    <div class="row-fluid">
+                        <div class="control-group">
+                            <div class="controls-row">
+                                <span class="icon"><i class="icon20 i-user"></i></span>
+                                <input  n:name=login class="required span12">
+                            </div>
+                        </div><!-- End .control-group  -->
+                        <div class="control-group">
+                            <div class="controls-row">
+                                <div class="icon"><i class="icon20 i-key"></i></div>
+                                 <input n:name=password class="required span12">
+                            </div>
+                        </div><!-- End .control-group  -->
+                        <div class="full">
+                            <input n:name=send class="btn btn-primary pull-right span12">
+                 
+                        </div>
+                    </div><!-- End .row-fluid  -->
+                {/form}
+            </div>
+        </div>
+    </div>
+</div>

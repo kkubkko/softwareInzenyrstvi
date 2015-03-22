@@ -21,14 +21,18 @@ class SignPresenter extends BasePresenter
 	{
 		$form = new Nette\Application\UI\Form;
                 $form->addText('login', 'Uživatelské jméno:')
-                    ->setRequired('Prosím vyplňte své uživatelské jméno.');
+                    ->setRequired('Prosím vyplňte své uživatelské jméno.')
+                    ->setAttribute('placeholder', 'Uživatelské jméno');
+                
 
                 $form->addPassword('password', 'Heslo:')
-                    ->setRequired('Prosím vyplňte své heslo.');
+                    ->setRequired('Prosím vyplňte své heslo.')
+                    ->setAttribute('placeholder', 'Heslo');
 
                 $form->addCheckbox('remember', 'Zůstat přihlášen');
 
                 $form->addSubmit('send', 'Přihlásit');
+                
 
                 $form->onSuccess[] = array($this, 'signInFormSucceeded');
                 return $form;
