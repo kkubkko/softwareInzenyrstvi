@@ -6,17 +6,23 @@
 
 <table>
     <thead>
-        <td>ID</td>
-        <td>popis</td>
-        <td>datum zalozeni</td>
-        <td>clenove</td>
+        <tr>
+            <td>ID</td>
+            <td>popis</td>
+            <td>datum zalozeni</td>
+            <td>clenove</td>
+            <td>akce</td>
+        </tr>
     </thead>
     <tbody>
     {foreach $tymy as $tym}
-        <td>{$tym->ID}</td>
-        <td>{$tym->popis}</td>
-        <td>{$tym->datum_zalozeni}</td>
-        <td>{foreach $clenove[$tym->ID] as $clen}{$clen->osoba->jmeno}, {/foreach}</td>
+        <tr>
+            <td>{$tym->ID}</td>
+            <td>{$tym->popis}</td>
+            <td>{$tym->datum_zalozeni}</td>
+            <td>{foreach $clenove[$tym->ID] as $clen}{$clen->osoba->jmeno}, {/foreach}</td>
+            <td><a href="{link Team:detail, $tym->ID}">detail</td>
+        </tr>
     {/foreach}    
     </tbody>    
 </table>

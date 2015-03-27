@@ -1,0 +1,32 @@
+{* Latte template *}
+
+{block content}
+
+<h1 n:block=title>Detail tymu</h1>
+
+<p>
+    <b>Popis:</b> {$tym->popis}<br />
+    <b>Datum zalozeni:</b> {$tym->datum_zalozeni}<br />
+    <b>Aktivita:</b>
+    {if $tym->ukoncen == true}
+         Ukoncena cinnost<br />
+    {else}
+         Aktivni tym<br />
+    {/if}
+</p>
+
+<h2>Aktivni clenove</h2>
+<table>
+    <thead>
+        <td>Jmeno</td>
+        <td>Pozice</td>
+    </thead>
+    <tbody>
+        {foreach $akt_clenove as $akt}
+            <tr>
+                <td>{$akt->osoba->jmeno}</td>
+                <td>--</td>
+            </tr>    
+        {/foreach}    
+    </tbody>
+</table>
