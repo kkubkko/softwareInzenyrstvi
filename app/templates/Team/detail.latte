@@ -14,7 +14,7 @@
          Aktivni tym<br />
     {/if}
 </p>
-
+{var $pom_i = 0;}
 <h2>Aktivni clenove</h2>
 <table>
     <thead>
@@ -25,8 +25,49 @@
         {foreach $akt_clenove as $akt}
             <tr>
                 <td>{$akt->osoba->jmeno}</td>
-                <td>--</td>
-            </tr>    
+                {foreach $role[$pom_i] as $pozice}
+                    <td>{$pozice->role->nazev}, </td>
+                {/foreach}
+            </tr>
+            {? $pom_i++;}
+        {/foreach}    
+    </tbody>
+</table>
+<h2>Aktivni projekty</h2>    
+<table>
+    <thead>
+        <td>ID</td>
+        <td>Popis</td>
+        <td>Etapa</td>
+        <td>Zakaznik</td>
+    </thead>
+    <tbody>
+        {foreach $sez_projektu as $proj}
+            <tr>
+                <td>{$proj->ID}</td>
+                <td>{$proj->popis}</td>
+                <td>{$proj->etapa}</td>
+                <td>{$proj->zakaznik->jmeno}</td>
+            </tr>
+        {/foreach}    
+    </tbody>
+</table>
+{? $pom_i = 0;}
+<h2>Byvaly clenove</h2>
+<table>
+    <thead>
+        <td>Jmeno</td>
+        <td>Pozice</td>
+    </thead>
+    <tbody>
+        {foreach $byv_clenove as $byv}
+            <tr>
+                <td>{$byv->osoba->jmeno}</td>
+                {foreach $byv_role[$pom_i] as $poz}
+                    <td>{$poz->role->nazev}, </td>
+                {/foreach}
+            </tr>
+            {? $pom_i++;}
         {/foreach}    
     </tbody>
 </table>

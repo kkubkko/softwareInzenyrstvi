@@ -7,6 +7,7 @@
             <file>file:/C:/xampp/htdocs/SWI/app/templates/Team/notAllowed.latte</file>
             <file>file:/C:/xampp/htdocs/SWI/app/presenters/TeamPresenter.php</file>
             <file>file:/C:/xampp/htdocs/SWI/app/templates/Team/teams.latte</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/model/Users.php</file>
             <file>file:/C:/xampp/htdocs/SWI/app/templates/@layout.latte</file>
             <file>file:/C:/xampp/htdocs/SWI/app/model/Teams.php</file>
             <file>file:/C:/xampp/htdocs/SWI/app/templates/Team/detail.latte</file>

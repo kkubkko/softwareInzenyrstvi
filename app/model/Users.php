@@ -53,6 +53,13 @@ class Users extends Nette\Object{
             );
         return $pom;
     }
+    
+    public function listOfUserRoles($id_user)
+    {
+        $pom = $this->database->table('prirazeniRole')->where('osoby_id = ? AND role_id <> ?', $id_user, 2)
+                ->order('role_id');
+        return $pom;
+    }
 
     public function deleteUser($id) {
         $this->database->table('Osoby')->where('ID = ?', $id)->delete();

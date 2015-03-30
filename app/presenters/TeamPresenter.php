@@ -15,6 +15,8 @@ class TeamPresenter extends BasePresenter {
     
     /** @var \App\Model\Teams @inject */
     public $tymy;
+    /** @var \App\Model\Users @inject */
+    public $uzivatele;
     
     public function actionTeams()
     {
@@ -47,8 +49,23 @@ class TeamPresenter extends BasePresenter {
     public function renderDetail($id_tym)
     {
         $this->template->tym = $this->tymy->vratTym($id_tym);
-        $this->template->akt_clenove = $this->tymy->seznamAktivnichClenuTymu($id_tym);
-        $this->template->byv_clenove = $this->tymy->seznamNeaktivnichClenuTymu($id_tym);
+        $clenove = $this->tymy->seznamAktivnichClenuTymu($id_tym);
+        $this->template->akt_clenove = $clenove;
+        $pom_i = 0; 
+        foreach ($clenove as $clen) {
+            $role[$pom_i] = $this->uzivatele->listOfUserRoles($clen->osoba_id);
+            $pom_i++;
+        }
+        if (isset($role)) { $this->template->role = $role; }
+        
+        $byvaly = $this->tymy->seznamNeaktivnichClenuTymu($id_tym);
+        $this->template->byv_clenove = $byvaly;
+        $pom_i = 0;
+        foreach ($byvaly as $byv) {
+            $roles[$pom_i] = $this->uzivatele->listOfUserRoles($byv->osoba_id);
+            $pom_i++;
+        }
+        if (isset($roles)) { $this->template->byv_role = $roles; }
         $this->template->sez_projektu = $this->tymy->seznamProjektuTymu($id_tym);
     }
 }
