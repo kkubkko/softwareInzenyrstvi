@@ -25,9 +25,30 @@ class Users extends Nette\Object{
 		
 		$data['heslo'] = Passwords::hash($data['heslo']);
 		
-		$this->database->table('Osoby')->insert($data);
+		$insertedUser = $this->database->table('Osoby')->insert($data);
+		
+		return $insertedUser["ID"];
 	}
 	
+	public function addContacts($data){
+		
+		$this->database->table('Kontakt')->insert($data);
+		
+	}
+	
+	public function addRole($data){
+		
+		$this->database->table('Role')->insert($data);
+		
+	}
+
+		public function  roles(){
+		
+		$role = $this->database->table('Role');
+		return $role;
+		
+	}
+
 	public function listOfUsers()
     {
         $pom = $this->database->table('Osoby');
