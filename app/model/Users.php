@@ -38,15 +38,14 @@ class Users extends Nette\Object{
 	
 	public function addRole($data){
 		
-		$this->database->table('Role')->insert($data);
+		$this->database->table('prirazeniRole')->insert($data);
 		
 	}
 
-		public function  roles(){
-		
-		$role = $this->database->table('Role');
-		return $role;
-		
+    public function  roles()
+    {
+        $role = $this->database->table('Role');
+        return $role;		
 	}
 
 	public function listOfUsers()

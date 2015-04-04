@@ -13,8 +13,15 @@ use Nette,
 class UsereditPresenter extends BasePresenter
 {
 
-	    /** @var \App\Model\Users @inject */
+	/** @var \App\Model\Users @inject */
     public $users;
+    /** @var Nette\Database\Context */
+    private $database;
+    
+    public function __construct(Nette\Database\Context $database)
+	{
+		$this->database = $database;
+	}
 
 	public function renderDefault() {
 		
@@ -103,8 +110,9 @@ class UsereditPresenter extends BasePresenter
 		//$UsersModel = $this->context->Users;
 		
 		try {
-			
-			$user = array( 'jmeno' => $values['jmeno'], 
+			$this->database->beginTransaction();
+			$user = array( 'jmeno' => $values['jmeno'],
+                           'login' => $values['login'], 
 						   'heslo' => $values['heslo']);
 			$userId = $this->users->addUser($user);
 			
@@ -117,16 +125,19 @@ class UsereditPresenter extends BasePresenter
 								'psc' => $values['psc']);
 			$this->users->addContacts($contacts);
 			
-			$date = DateTime::getTimestamp();
+			$date = /*DateTime::getTimestamp();*/ date('Y-m-d');
 			$role= array(	'role_id' => $values['role'],
-							'osoba_id' => $userId,
+							'osoby_id' => $userId,
 							'datum_prirazeni' => $date);
 			$this->users->addRole($role);
+            
+            $this->database->commit();
 			
 			$this->redirect('Homepage:');
             //$this->redirect('Admin:default');
 
 		} catch (\Nette\Neon\Exception $e) {
+            $this->database->rollBack();
 			$form->addError($e->getMessage());
 		}
 	}
