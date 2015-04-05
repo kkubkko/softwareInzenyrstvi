@@ -142,5 +142,31 @@ class UsereditPresenter extends BasePresenter
 		}
 	}
 
+	public function actionDetail($user_id)
+    {
+        if (!$this->user->isInRole('admin') && !$this->user->isInRole('manažer')) {
+            $this->setView('notAllowed');
+        }
+        
+		$user = $this->users->vratUser($user_id);
+		$kontakt = $this->users->vratKontakty($user_id);
+        if (!isset($user) || !isset($kontakt)){
+            $this->setView('notFound');
+        } 
+    }
+	
+	public function renderDetail($user_id)
+    {
+        $user = $this->users->vratUser($user_id);
+		
+		$projekty = $this->users->vratProjektyZakaznika($user_id);
+		$this->template->projekty = $projekty;
+
+		$tymy = $this->users->vratTymy($user_id);
+		$this->template->tymy = $tymy;
+		
+		$this->template->uzivatel = $user;
+		$this->template->kontakt = $this->users->vratKontakty($user_id);
+    }
 
 }
