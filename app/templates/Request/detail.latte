@@ -1,0 +1,14 @@
+{* Latte template *}
+
+{block content}
+
+{foreach $requests as $request}
+	<br>Nazov : {$request->sluzby->nazev}
+	<br>Popis : {$request->sluzby->popis}
+	<br>Specialni : {$request->specialni->text}
+{/foreach}
+
+<br><br>
+<a href="{link Request:list}">Spět na seznam</a>
+<br>
+<a href="{link Homepage:default}">Domu</a>

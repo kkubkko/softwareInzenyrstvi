@@ -28,3 +28,4 @@ services:
 	users: App\Model\Users
 	documents: App\Model\Documents
 	teams: App\Model\Teams
+	requests: App\Model\Requests

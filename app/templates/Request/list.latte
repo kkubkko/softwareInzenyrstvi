@@ -1,0 +1,19 @@
+{* Latte template *}
+
+{block content}
+
+<table>
+	<tr>
+		<th>Název služby</th>
+		<th>Detail</th>
+	</tr>
+{foreach $requests as $request}
+	<tr>
+		<td>SLuzby : {$request->sluzby->nazev}</td> 
+		<td><a href="{link Request:detail, $request->ID}">info</a></td>
+	</tr>
+{/foreach}
+</table>
+
+<br><br>
+<a href="{link Homepage:default}">Domu</a>
