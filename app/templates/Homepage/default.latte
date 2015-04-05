@@ -12,6 +12,11 @@
     {else}
         <li><a n:href="Sign:in">Přihlásit</a></li>
     {/if}
+	
+	<li><a n:href="Useredit:">Přidej uživatele</a></li>
+	<li><a n:href="Useredit:usersList">Seznam uživatelů</a></li>
+	<li><a n:href="Team:teams">Týmy</a></li>
+	<li><a n:href="Project:projects">Projekty</a></li>
 </ul>
 <!--
 <div id="content">
@@ -37,12 +42,8 @@
 		</div>
 	</div>
         
--->
-	<h2>We hope you enjoy this framework!</h2>
-	<a n:href="Useredit:">add user</a> 
-	<a n:href="Useredit:usersList">list of users</a>
-    <a n:href="Team:teams">teams</a>
-    <a n:href="Project:projects">projects</a>
+--> 
+    
 <!--
 	<section id="template">
 		<h2>This page template located at <span>{strstr($presenter->template->getFile(), app)}</span></h2>
