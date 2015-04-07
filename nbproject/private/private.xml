@@ -5,10 +5,14 @@
         <group>
             <file>file:/C:/xampp/htdocs/SWI/app/templates/Team/addTeam.latte</file>
             <file>file:/C:/xampp/htdocs/SWI/app/presenters/ProjectPresenter.php</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/presenters/UsereditPresenter.php</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/templates/Useredit/detail.latte</file>
             <file>file:/C:/xampp/htdocs/SWI/app/model/Documents.php</file>
             <file>file:/C:/xampp/htdocs/SWI/app/model/Projects.php</file>
             <file>file:/C:/xampp/htdocs/SWI/app/presenters/TeamPresenter.php</file>
             <file>file:/C:/xampp/htdocs/SWI/app/templates/Team/addMember.latte</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/templates/Team/teams.latte</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/model/Users.php</file>
             <file>file:/C:/xampp/htdocs/SWI/app/model/Teams.php</file>
             <file>file:/C:/xampp/htdocs/SWI/app/templates/Team/detail.latte</file>
         </group>

@@ -87,9 +87,9 @@ class Users extends Nette\Object{
 	
 	public function vratUser($user_id) {
 		
-		$user = $this->database->table('Osoby')->where('ID = ?', $user_id);
-		
-		if ($user->count() > 0) {
+        $user = $this->database->table('Osoby')->where('ID = ?', $user_id);
+
+        if ($user->count() > 0) {
             return $user->fetch();
         } else {
             return NULL;

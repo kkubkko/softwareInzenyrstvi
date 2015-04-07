@@ -75,6 +75,13 @@ class Projects extends Nette\Object {
         $this->database->table('Projekty')->where('ID = ?', $id_projekt)->delete();
         $this->dokumenty->zrusitDokument($pom2);        
     }
+//------------------------------------------------------------------------------  
+    
+    public function seznamNeukoncenychProjektu($id_tym)
+    {
+        return $this->database->table('Projekty')
+                ->where('etapa <> ? AND tym_id = ?', 'ukončen', $id_tym);        
+    }
 //------------------------------------------------------------------------------
     
     public function vratHeslo($heslo)

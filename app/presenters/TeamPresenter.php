@@ -19,6 +19,8 @@ class TeamPresenter extends BasePresenter {
     public $uzivatele;
     /** @var Nette\Database\Context */
     private $database;
+    private $pozice;
+    private $tym;
     
     public function __construct(Nette\Database\Context $database)
 	{
@@ -29,25 +31,40 @@ class TeamPresenter extends BasePresenter {
     {
         $form = new Nette\Application\UI\Form;
         
-        $roles = $this->uzivatele->roles();
-        foreach ($roles as $role){
-            $sel_role[$role->ID] = $role->nazev;
-        }
-        $form->addSelect('role', 'Role v tymu', $sel_role)
-                ->setPrompt('Volba role v tymu');
+        $form->addHidden('tym', $this->tym);
+        if (isset($this->pozice)) {
+            $form->addHidden('role', $this->pozice);
+            $users = $this->uzivatele->listOfUsersWithRole($this->pozice);
+        } else {
+            $roles = $this->uzivatele->roles();
+            foreach ($roles as $role){
+                $sel_role[$role->ID] = $role->nazev;
+            }
+            $form->addSelect('role', 'Role v tymu', $sel_role)
+                    ->setPrompt('Volba role v tymu')
+                    ->setRequired('Musite vyplnit roli v tymu!');
+            $users = $this->uzivatele->listOfEmployes();
+        }        
         
-        $users = $this->uzivatele->listOfEmployes();
         foreach ($users as $user){
             $sel_user[$user->ID] = $user->jmeno;
         }
         $form->addSelect('osoba', 'Zamestnanec', $sel_user)
-                ->setPrompt('Volba zamestnance');
-        
+                ->setPrompt('Volba zamestnance')
+                ->setRequired('Musite vybrat zamestnance');        
         $form->addSubmit('ok', 'Pridat');
+        $form->onSuccess[] = array($this, 'memberFormSucceded');
         
         return $form;        
     }
     
+    public function memberFormSucceded($form){
+        $hodnoty = $form->values;
+        $this->tymy->pridejClenaDoTymu($hodnoty->osoba, $hodnoty->tym, $hodnoty->role);
+        $this->flashMessage('Clen tymu byl pridan!');
+        $this->redirect('Team:detail',$hodnoty->tym);
+    }
+
     protected function createComponentAddTeamForm()
     {
         $form = new Nette\Application\UI\Form;
@@ -140,8 +157,21 @@ class TeamPresenter extends BasePresenter {
         }
     }
     
+    public function handleDelTeam($id_tym)
+    {
+        if (!$this->user->isInRole('admin') && !$this->user->isInRole('manažer')) {
+            $this->setView('notAllowed');
+        } else {
+            if ($this->tymy->vsechnyProjUkonceny($id_tym)){
+                $this->tymy->ukonciCinnostTymu($id_tym);
+                $this->flashMessage('Cinnost tymu byla ukoncena.');
+            } else {
+                $this->flashMessage('Nejsou dokonceny vsechny projekty!', 'error');
+            }
+        }
+    }    
 
-    public function actionAddMember($id_tym)
+    public function actionAddMember($id_tym, $pozice)
     {
         if (!$this->user->isInRole('admin') && !$this->user->isInRole('manažer')) {
             $this->setView('notAllowed');
@@ -150,6 +180,10 @@ class TeamPresenter extends BasePresenter {
         if (!isset($tym)){
             $this->setView('notFound');
         } 
+        if (isset($pozice)){
+            $this->pozice = $pozice;
+        }
+        $this->tym = $id_tym;
     }
     
     public function actionAddTeam()
@@ -181,7 +215,11 @@ class TeamPresenter extends BasePresenter {
     {
         $tym = $this->tymy->vratTym($id_tym);
         $this->template->popisTymu = $tym->popis;
-        
+        if (isset($this->pozice)){
+            $this->template->nadpis = "Pridani clena na pozici $this->pozice";
+        } else {
+            $this->template->nadpis = "Pridani clena";
+        }        
     }
     
     public function renderAddTeam()
@@ -192,11 +230,9 @@ class TeamPresenter extends BasePresenter {
     public function renderTeams()
     {
         $tymy = $this->tymy->seznamTymuPodleAktivity(false);
+        $ukoncene = $this->tymy->seznamTymuPodleAktivity(true);
         $this->template->tymy = $tymy;
-        foreach ($tymy as $tym){
-            $clenove[$tym->ID] = $this->tymy->seznamVsechClenuTymu($tym->ID);
-        }
-        $this->template->clenove = $clenove;
+        $this->template->ukoncene = $ukoncene;
     }
     
     public function renderDetail($id_tym)

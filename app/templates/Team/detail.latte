@@ -35,7 +35,14 @@
         {/foreach}    
     </tbody>
 </table>
-<p><a href="{link Team:addMember, $tym->ID}">Pridat clena tymu</a></p>    
+{if $tym->ukoncen == false}    
+<p>Pridat clena tymu: 
+    <a href="{link Team:addMember, $tym->ID, 'architekt'}">architekt</a>, 
+    <a href="{link Team:addMember, $tym->ID, 'projektant'}">projektant</a>, 
+    <a href="{link Team:addMember, $tym->ID, 'stavbyvedoucí'}">stavbyvedouci</a>, 
+    <a href="{link Team:addMember, $tym->ID, 'manažer'}">manazer</a>
+</p>
+{/if}
 <h2>Aktivni projekty</h2>    
 <table>
     <thead>

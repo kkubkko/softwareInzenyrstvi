@@ -16,11 +16,14 @@ use Nette;
 class Teams extends Nette\Object {
     /** @var Nette\Database\Context */
     private $database;
+    
+    private $projekty;
 //------------------------------------------------------------------------------
     
-    public function __construct(Nette\Database\Context $database)
+    public function __construct(Nette\Database\Context $database, \App\Model\Projects $projects)
     {
             $this->database = $database;
+            $this->projekty = $projects;
     }
 //------------------------------------------------------------------------------
     
@@ -51,9 +54,19 @@ class Teams extends Nette\Object {
     
     public function ukonciCinnostTymu($id_tym)
     {
-        $this->database->table('Tymy')->where('ID = ?', $id_tym)->update(array(
-            'ukoncen' => true,
-        ));
+        try {
+            $this->database->beginTransaction();
+            $clenove = $this->seznamAktivnichClenuTymu($id_tym);
+            foreach ($clenove as $clen){
+                $this->odeberClenaTymu($clen->osoba_id, $id_tym);
+            }            
+            $this->database->table('Tymy')->where('ID = ?', $id_tym)->update(array(
+                'ukoncen' => true,
+            ));            
+            $this->database->commit();
+        } catch (Exception $ex) {
+            $this->database->rollBack();
+        }
     }
 //------------------------------------------------------------------------------
     
@@ -123,4 +136,15 @@ class Teams extends Nette\Object {
         return $pom;
     }
 //------------------------------------------------------------------------------
+    
+    public function vsechnyProjUkonceny($id_tym)
+    {
+        $proj = $this->projekty->seznamNeukoncenychProjektu($id_tym);
+        if ($proj->count() > 0) {
+            return false;
+        } else {
+            return true;
+        }        
+    }
+//------------------------------------------------------------------------------    
 }
