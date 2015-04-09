@@ -1,0 +1,29 @@
+{* Latte template *}
+
+{block content}
+
+<p> <h3>Kontakt :</h3>
+	<br>Jmeno : {$uzivatel->jmeno}</br> 
+	<br>Telefon: {$kontakt->telefon}
+	<br>Email: {$kontakt->email}
+	<br>Ulice: {$kontakt->ulice}
+	<br>Město: {$kontakt->mesto}
+	<br>PSČ: {$kontakt->psc}
+</p>
+
+<p>
+	<h3> Tymy : </h3>
+	{foreach $tymy as $tym}
+		<br>Tym : {$tym->tym->popis}  <a href="{link Team:detail, $tym->tym_id}">detail</a>
+	{/foreach} 
+</p>
+<p>
+	<h3>Projekty :</h3>
+	{foreach $projekty as $projekt}
+		<br>Projekt : {$projekt->popis}
+	{/foreach}
+</p>
+
+<p>
+	<a href="{link Homepage:default}">Domu</a>
+</p>

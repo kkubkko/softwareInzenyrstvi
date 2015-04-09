@@ -20,19 +20,29 @@
     <thead>
         <td>Jmeno</td>
         <td>Pozice</td>
+        <td>Datum pridani</td>
+        <td>Akce</td>
     </thead>
     <tbody>
         {foreach $akt_clenove as $akt}
             <tr>
                 <td>{$akt->osoba->jmeno}</td>
-                {foreach $role[$pom_i] as $pozice}
-                    <td>{$pozice->role->nazev}, </td>
-                {/foreach}
+                <td>{$akt->pozice}</td>
+                <td>{$akt->datum_pripojeni}</td>
+                <td><a href="{link delUser!, $tym->ID, $akt->osoba_id}" onclick="return confirm('Odebrat clena?')">odebrat</a></td>
             </tr>
             {? $pom_i++;}
         {/foreach}    
     </tbody>
 </table>
+{if $tym->ukoncen == false}    
+<p>Pridat clena tymu: 
+    <a href="{link Team:addMember, $tym->ID, 'architekt'}">architekt</a>, 
+    <a href="{link Team:addMember, $tym->ID, 'projektant'}">projektant</a>, 
+    <a href="{link Team:addMember, $tym->ID, 'stavbyvedoucí'}">stavbyvedouci</a>, 
+    <a href="{link Team:addMember, $tym->ID, 'manažer'}">manazer</a>
+</p>
+{/if}
 <h2>Aktivni projekty</h2>    
 <table>
     <thead>
@@ -58,14 +68,20 @@
     <thead>
         <td>Jmeno</td>
         <td>Pozice</td>
+        <td>Datum ukonceni</td>
+        {if $tym->ukoncen == false}
+            <td>Akce</td>
+        {/if}
     </thead>
     <tbody>
         {foreach $byv_clenove as $byv}
             <tr>
                 <td>{$byv->osoba->jmeno}</td>
-                {foreach $byv_role[$pom_i] as $poz}
-                    <td>{$poz->role->nazev}, </td>
-                {/foreach}
+                <td>{$byv->pozice}</td>
+                <td>{$byv->datum_ukonceni}</td>
+                {if $tym->ukoncen == false}
+                    <td><a href="{link addUser!, $tym->ID, $byv->osoba_id}" onclick="return confirm('Pridat clena?')">pridat</a></td>
+                {/if}    
             </tr>
             {? $pom_i++;}
         {/foreach}    

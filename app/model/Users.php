@@ -25,9 +25,29 @@ class Users extends Nette\Object{
 		
 		$data['heslo'] = Passwords::hash($data['heslo']);
 		
-		$this->database->table('Osoby')->insert($data);
+		$insertedUser = $this->database->table('Osoby')->insert($data);
+		
+		return $insertedUser["ID"];
 	}
 	
+	public function addContacts($data){
+		
+		$this->database->table('Kontakt')->insert($data);
+		
+	}
+	
+	public function addRole($data){
+		
+		$this->database->table('prirazeniRole')->insert($data);
+		
+	}
+
+    public function  roles()
+    {
+        $role = $this->database->table('Role');
+        return $role;		
+	}
+
 	public function listOfUsers()
     {
         $pom = $this->database->table('Osoby');
@@ -63,5 +83,43 @@ class Users extends Nette\Object{
 
     public function deleteUser($id) {
         $this->database->table('Osoby')->where('ID = ?', $id)->delete();
+	}
+	
+	public function vratUser($user_id) {
+		
+        $user = $this->database->table('Osoby')->where('ID = ?', $user_id);
+
+        if ($user->count() > 0) {
+            return $user->fetch();
+        } else {
+            return NULL;
+        }
+		
+	}
+	
+	public function vratKontakty($user_id) {
+		
+		$kontakty = $this->database->table('Kontakt')->where('osoba_id = ?',$user_id);
+		
+		if ($kontakty->count() > 0) {
+            return $kontakty->fetch();
+        } else {
+            return NULL;
+        }
+	}
+	
+	public function vratProjektyZakaznika($user_id) {
+		$projekty = $this->database->table('Projekty')->where('zakaznik_id = ?', $user_id);
+		
+        return $projekty;
+
+	}
+	
+	public function vratTymy($user_id) {
+		
+		$tymy = $this->database->table('Tym_osoby')->where('osoba_id = ?', $user_id );
+		
+		return $tymy;
+		
 	}
 }

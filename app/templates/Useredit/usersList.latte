@@ -93,7 +93,7 @@
 
                                             {foreach $users as $user}
                                             <li class="clearfix">
-                                                <span class="name">{$user->jmeno}</span>
+                                                <span class="name"><a href="{link Useredit:detail, $user->ID}">{$user->jmeno}</a></span>
                                                 <span class="name">Login: {$user->login}</span>
                                                 
                                                 <span class="name">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ROLE</span>
