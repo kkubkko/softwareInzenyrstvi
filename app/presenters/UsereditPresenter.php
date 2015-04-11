@@ -175,6 +175,8 @@ class UsereditPresenter extends BasePresenter
 	
 	public function renderDetail($user_id)
     {
+		$this->template->isCustomer = FALSE;
+		
         $user = $this->users->vratUser($user_id);
 		
 		$projekty = $this->users->vratProjektyZakaznika($user_id);
@@ -185,6 +187,15 @@ class UsereditPresenter extends BasePresenter
 		
 		$this->template->uzivatel = $user;
 		$this->template->kontakt = $this->users->vratKontakty($user_id);
+		
+		$roles = $this->users->vratRoluPreUsera($user_id);
+		
+		foreach ($roles as $role) {
+			if ($role->role->nazev == 'zákazník') {
+				$this->template->isCustomer = TRUE;
+			}
+		}
+		
     }
 
 	public function actionNewEmployee() {

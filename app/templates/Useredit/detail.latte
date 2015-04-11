@@ -11,19 +11,25 @@
 	<br>PSČ: {$kontakt->psc}
 </p>
 
-<p>
-	<h3> Tymy : </h3>
-	{foreach $tymy as $tym}
-		<br>Tym : {$tym->tym->popis}  <a href="{link Team:detail, $tym->tym_id}">detail</a>
-	{/foreach} 
-</p>
-<p>
-	<h3>Projekty :</h3>
-	{foreach $projekty as $projekt}
-		<br>Projekt : {$projekt->popis}
-	{/foreach}
-</p>
+
+{if $isCustomer == FALSE}
+	<p>
+		<h3> Tymy : </h3>
+		{foreach $tymy as $tym}
+			<br>Tym : {$tym->tym->popis}  <a href="{link Team:detail, $tym->tym_id}">detail</a>
+		{/foreach} 
+	</p>
+{else}
+	<p>
+		<h3>Projekty :</h3>
+		{foreach $projekty as $projekt}
+			<br>Projekt : {$projekt->popis}
+		{/foreach}
+	</p>	
+{/if}
 
 <p>
+	<a n:href="Useredit:usersList">Seznam uživatelů</a>
+	<br/>
 	<a href="{link Homepage:default}">Domu</a>
 </p>

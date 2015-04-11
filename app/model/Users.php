@@ -99,7 +99,14 @@ class Users extends Nette\Object{
 		
 	}
 	
-	public function vratUser($user_id) {
+	public function vratRoluPreUsera ($id_user) {
+		
+		$roles = $this->database->table('prirazeniRole')->where('osoby_id = ?', $id_user);
+		return $roles;
+		
+	}
+
+		public function vratUser($user_id) {
 		
         $user = $this->database->table('Osoby')->where('ID = ?', $user_id);
 
