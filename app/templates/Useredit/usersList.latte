@@ -82,7 +82,7 @@
                                 <div class="widget">
                                     <div class="widget-title">
                                         <div class="icon"><i class="icon20 i-vcard"></i></div> 
-                                        <h4>Uživatelé</h4>
+                                        <h4>Zaměstnanci</h4>
                                         <a href="#" class="minimize"></a>
 
                                     </div><!-- End .widget-title -->
@@ -91,14 +91,14 @@
                                         <ul class="recent-users stripes">  
            
 
-                                            {foreach $users as $user}
+                                            {foreach $employees as $employee}
                                             <li class="clearfix">
-                                                <span class="name"><a href="{link Useredit:detail, $user->ID}">{$user->jmeno}</a></span>
-                                                <span class="name">Login: {$user->login}</span>
+                                                <span class="name"><a href="{link Useredit:detail, $employee->ID}">{$employee->jmeno}</a></span>
+                                                <span class="name">Login: {$employee->login}</span>
                                                 
                                                 <span class="name">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ROLE</span>
                                                 <div class="actions">
-                                                    <a n:href="useredit:delete $user->ID" class="act act-primary gap-right10"><i class="icon12 i-pencil gap-left0"></i>Smazat</a>
+                                                    <a n:href="useredit:delete $employee->ID" class="act act-primary gap-right10"><i class="icon12 i-pencil gap-left0"></i>Smazat</a>
                                                 </div>    
                                                     <span class="status tip" title="Administrator"><i class="icon20 i-king"></i></span>
                                                 
@@ -111,7 +111,44 @@
                             
                             
 
-                       </div>     
+                       </div>
+					
+						<!-- TENTO DIV SOM TU PRIDÁVAL JA (KUBO), TAK SI TO SKONTROLUJ, LEN SOM SKOPÍROVAL TEN NAD TÝMTO  -->
+						<div class="row-fluid">
+                            <div class="span12">
+                                <div class="widget">
+                                    <div class="widget-title">
+                                        <div class="icon"><i class="icon20 i-vcard"></i></div> 
+                                        <h4>Zákazníci</h4>
+                                        <a href="#" class="minimize"></a>
+
+                                    </div><!-- End .widget-title -->
+                                
+                                    <div class="widget-content">
+                                        <ul class="recent-users stripes">  
+           
+
+                                            {foreach $customers as $customer}
+                                            <li class="clearfix">
+                                                <span class="name"><a href="{link Useredit:detail, $customer->ID}">{$customer->jmeno}</a></span>
+                                                <span class="name">Login: {$customer->login}</span>
+                                                
+                                                <span class="name">-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ROLE</span>
+                                                <div class="actions">
+                                                    <a n:href="useredit:delete $customer->ID" class="act act-primary gap-right10"><i class="icon12 i-pencil gap-left0"></i>Smazat</a>
+                                                </div>    
+                                                    <span class="status tip" title="Zákazník"><i class="icon20 i-king"></i></span>
+                                                
+                                            </li>
+                                            {/foreach} 
+                                        </ul>
+                                    </div><!-- End .widget-content -->
+                                </div><!-- End .widget -->
+                            </div><!-- End .span6  -->                              
+                       </div>
+						<!-- TENTO DIV SOM TU PRIDÁVAL JA (KUBO), TAK SI TO SKONTROLUJ, LEN SOM SKOPÍROVAL TEN NAD TÝMTO  -->
+										
+										
                         <div class="row-fluid">
                             
                             <div class="span12">

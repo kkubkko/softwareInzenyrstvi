@@ -28,7 +28,8 @@ class UsereditPresenter extends BasePresenter
 	}
 
 	public function renderUsersList(){
-        $this->template->users = $this->users->listOfUsers();
+        $this->template->employees = $this->users->listOfEmployes();
+		$this->template->customers = $this->users->listOfCustomers();
     }
 	
 	public function actionDelete($id) {
