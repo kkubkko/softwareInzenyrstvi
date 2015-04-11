@@ -69,7 +69,7 @@ class Users extends Nette\Object{
         $pom = $this->database->query(
                 "SELECT a.ID,a.personal_cislo,a.jmeno,a.login FROM Osoby AS a "
                 ."JOIN prirazeniRole as b On a.ID = b.osoby_id JOIN Role as c "
-                ."ON b.role_id = c.ID WHERE c.nazev = '$role'"
+                ."ON b.role_id = c.ID WHERE c.nazev = '$role' AND a.inactive != 1"
             );
         return $pom;
     }
@@ -82,7 +82,9 @@ class Users extends Nette\Object{
     }
 
     public function deleteUser($id) {
-        $this->database->table('Osoby')->where('ID = ?', $id)->delete();
+		
+		$this->database->query('UPDATE Osoby SET inactive=1 WHERE ID=?', $id);
+		
 	}
 	
 	public function vratUser($user_id) {
