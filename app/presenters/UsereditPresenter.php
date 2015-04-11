@@ -17,6 +17,7 @@ class UsereditPresenter extends BasePresenter
     public $users;
     /** @var Nette\Database\Context */
     private $database;
+	private $isNewEmployee = FALSE;
     
     public function __construct(Nette\Database\Context $database)
 	{
@@ -65,6 +66,7 @@ class UsereditPresenter extends BasePresenter
 			->setRequired('Please re-enter your password.');
 		
 		$form->addText('telefon', 'Telefón:')
+				->setRequired('Please re-enter your telefon.')
 				->setType('number');
 		
 		$form->addText('email', 'Email:')
@@ -81,7 +83,13 @@ class UsereditPresenter extends BasePresenter
 				->setType('number')
 			->setRequired('Please enter your psč.');
 		
-	$roles = $this->users->roles();
+	
+	if ($this->isNewEmployee == TRUE) {
+		$roles = $this->users->rolesForEmployees();
+	} else {
+		$roles = $this->users->rolesForCustomer();
+	}
+	
 	foreach ($roles as $role) {
             $arr_roles[$role->ID] = $role->nazev;
         }
@@ -131,6 +139,15 @@ class UsereditPresenter extends BasePresenter
 							'osoby_id' => $userId,
 							'datum_prirazeni' => $date);
 			$this->users->addRole($role);
+			
+			if ($this->isNewEmployee == TRUE) {
+				
+				$role= array('role_id' => '2',
+							'osoby_id' => $userId,
+							'datum_prirazeni' => $date);
+				$this->users->addRole($role);
+			
+			}
             
             $this->database->commit();
 			
@@ -170,4 +187,10 @@ class UsereditPresenter extends BasePresenter
 		$this->template->kontakt = $this->users->vratKontakty($user_id);
     }
 
+	public function actionNewEmployee() {
+		
+		$this->isNewEmployee = TRUE;
+		
+	}
+	
 }

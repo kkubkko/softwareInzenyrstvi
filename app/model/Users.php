@@ -47,6 +47,18 @@ class Users extends Nette\Object{
         $role = $this->database->table('Role');
         return $role;		
 	}
+	
+	public function rolesForEmployees ()
+	{
+		$role = $this->database->table('Role')->where('ID != ? AND ID != ?', '1', '2');
+        return $role;
+	}
+	
+	public function rolesForCustomer ()
+	{
+		$role = $this->database->table('Role')->where('ID = ?', '1');
+        return $role;
+	}
 
 	public function listOfUsers()
     {
