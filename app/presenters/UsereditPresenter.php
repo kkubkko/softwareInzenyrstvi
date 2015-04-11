@@ -54,34 +54,34 @@ class UsereditPresenter extends BasePresenter
 	{
 		$form = new Nette\Application\UI\Form;
 		$form->addText('jmeno', 'Jméno:')
-			->setRequired('Please enter your username.');
+			->setRequired('Prosím zadejte jméno.');
 		
 		$form->addText('login', 'Login:')
-			->setRequired('Please enter your login.');
+			->setRequired('Prosím zadejte příjmení.');
 
 		$form->addPassword('heslo', 'Heslo:')
-			->setRequired('Please enter your password.');
+			->setRequired('Prosím zadejte heslo.');
 		
 		$form->addPassword('zopakovaneHeslo', 'Potvrď heslo:')
-			->setRequired('Please re-enter your password.');
+			->setRequired('Prosím zopakujte heslo.');
 		
 		$form->addText('telefon', 'Telefón:')
-				->setRequired('Please re-enter your telefon.')
+				->setRequired('Prosím zadejte telefónní číslo.')
 				->setType('number');
 		
 		$form->addText('email', 'Email:')
-			->setRequired('Please enter your username.')
+			->setRequired('Prosím zadejte email.')
 			->addRule($this->emailValidator, 'Nesprávny formát emailu.');
 		
-		$form->addText('ulice', 'Ulice:')
-			->setRequired('Please enter your street.');
-		
 		$form->addText('mesto', 'Mesto:')
-			->setRequired('Please enter your city.');
+			->setRequired('Prosím zadejte město.');
+		
+		$form->addText('ulice', 'Ulice:')
+			->setRequired('Prosím zadejte ulici.');
 		
 		$form->addText('psc', 'PSČ:')
 				->setType('number')
-			->setRequired('Please enter your psč.');
+			->setRequired('Prosím zadejte psč.');
 		
 	
 	if ($this->isNewEmployee == TRUE) {
@@ -94,7 +94,7 @@ class UsereditPresenter extends BasePresenter
             $arr_roles[$role->ID] = $role->nazev;
         }
 		$form->addSelect('role', 'Role:', $arr_roles)
-				->setRequired('Please enter your role.')
+				->setRequired('Prosím zadejte roli.')
                 ->setPrompt('Volba role');
 
 		$form->addSubmit('send', 'Uložit');
@@ -110,7 +110,7 @@ class UsereditPresenter extends BasePresenter
 		$values = $form->getValues();
 
 		if ($values["heslo"] != $values["zopakovaneHeslo"]) { // validační podmínka
-			$form->addError('Heslá sa nezhodujú');
+			$form->addError('Heslá se neshodují');
 		}
 	}
 
