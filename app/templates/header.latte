@@ -1,0 +1,24 @@
+{block content}
+<header id="header" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+            <div class="nav-no-collapse">
+                <ul class="nav pull-right">
+                    <li class="divider-vertical"></li>
+                    <li class="dropdown user">
+                         <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
+                            <b>Username</b><!-- Doplnit jmeno přihlášeného usera  --> 
+                            <span class="more"><i class="icon16 i-arrow-down-2"></i></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li> <a href="users_edit.php?id_user=" class=""> <i class="icon16 i-king"></i> Nastavení</a></li> <!-- Doplnit id usera v href  --> 
+                            <li> <a href="{link Sign:out}" class=""> <i class="icon16 i-exit"></i> Logout</a> </li>
+                        </ul>
+                    </li>
+                    <li class="divider-vertical"></li>
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </div>
+</header> <!-- End #header  -->   
+{/block}
