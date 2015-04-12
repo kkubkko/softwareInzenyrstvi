@@ -6,9 +6,11 @@
             <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/model/Requests.php</file>
             <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/presenters/HomepagePresenter.php</file>
             <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Request/list.latte</file>
+            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Useredit/default.latte</file>
             <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/model/Users.php</file>
             <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/presenters/RequestPresenter.php</file>
             <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Request/detail.latte</file>
+            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Useredit/newEmployee.latte</file>
             <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/presenters/ProjectPresenter.php</file>
             <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/config/config.neon</file>
             <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Useredit/usersList.latte</file>

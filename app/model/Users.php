@@ -143,4 +143,16 @@ class Users extends Nette\Object{
 		return $tymy;
 		
 	}
+	
+	public function editUser($user) {
+		
+		$this->database->table('Osoby')->where('ID = ?', $user['ID'])->update($user);
+		
+	}
+	
+	public function editKontakty($kontakty) {
+		
+		$this->database->table('Kontakt')->where('osoba_id = ?', $kontakty['osoba_id'])->update($kontakty);
+		
+	}
 }

@@ -18,6 +18,8 @@ class UsereditPresenter extends BasePresenter
     /** @var Nette\Database\Context */
     private $database;
 	private $isNewEmployee = FALSE;
+	private $edit = FALSE;
+	private $userId = 0;
     
     public function __construct(Nette\Database\Context $database)
 	{
@@ -84,19 +86,23 @@ class UsereditPresenter extends BasePresenter
 			->setRequired('Prosím zadejte psč.');
 		
 	
-	if ($this->isNewEmployee == TRUE) {
-		$roles = $this->users->rolesForEmployees();
-	} else {
-		$roles = $this->users->rolesForCustomer();
-	}
-	
-	foreach ($roles as $role) {
-            $arr_roles[$role->ID] = $role->nazev;
-        }
-		$form->addSelect('role', 'Role:', $arr_roles)
-				->setRequired('Prosím zadejte roli.')
-                ->setPrompt('Volba role');
+	if ($this->edit == FALSE) {
+		
+			if ($this->isNewEmployee == TRUE) {
+			$roles = $this->users->rolesForEmployees();
+		} else {
+			$roles = $this->users->rolesForCustomer();
+		}
 
+		foreach ($roles as $role) {
+				$arr_roles[$role->ID] = $role->nazev;
+			}
+			$form->addSelect('role', 'Role:', $arr_roles)
+					->setRequired('Prosím zadejte roli.')
+					->setPrompt('Volba role');
+			
+	} 
+		
 		$form->addSubmit('send', 'Uložit');
 
 		$form->onValidate[] = array($this, 'validateAddUserForm');
@@ -120,38 +126,66 @@ class UsereditPresenter extends BasePresenter
 		
 		try {
 			$this->database->beginTransaction();
-			$user = array( 'jmeno' => $values['jmeno'],
+			
+			if ($this->edit == TRUE) {
+				$user = array(	'ID' => $this->userId, 
+							'jmeno' => $values['jmeno'],
                            'login' => $values['login'], 
 						   'heslo' => $values['heslo']);
-			$userId = $this->users->addUser($user);
-			
-			
-			$contacts = array ( 'osoba_id' => $userId,
+				
+				$contacts = array ( 'osoba_id' => $this->userId,
 								'telefon' => $values['telefon'],
 								'email' => $values['email'],
 								'ulice' => $values['ulice'],
 								'mesto' => $values['mesto'],
 								'psc' => $values['psc']);
-			$this->users->addContacts($contacts);
+			} else {
+				$user = array( 'jmeno' => $values['jmeno'],
+                           'login' => $values['login'], 
+						   'heslo' => $values['heslo']);
+				$userId = $this->users->addUser($user);
+				$contacts = array ( 'osoba_id' => $userId,
+								'telefon' => $values['telefon'],
+								'email' => $values['email'],
+								'ulice' => $values['ulice'],
+								'mesto' => $values['mesto'],
+								'psc' => $values['psc']);
+			}
 			
-			$date = /*DateTime::getTimestamp();*/ date('Y-m-d');
-			$role= array(	'role_id' => $values['role'],
-							'osoby_id' => $userId,
-							'datum_prirazeni' => $date);
-			$this->users->addRole($role);
 			
-			if ($this->isNewEmployee == TRUE) {
+			
+			if ($this->edit == TRUE) {
 				
-				$role= array('role_id' => '2',
+				$this->users->editUser($user);
+				$this->users->editKontakty($contacts);
+				
+			} else {
+				$this->users->addContacts($contacts);
+				
+				$date = /*DateTime::getTimestamp();*/ date('Y-m-d');
+				$role= array(	'role_id' => $values['role'],
 							'osoby_id' => $userId,
 							'datum_prirazeni' => $date);
 				$this->users->addRole($role);
 			
+				if ($this->isNewEmployee == TRUE) {
+				$role= array('role_id' => '2',
+							'osoby_id' => $userId,
+							'datum_prirazeni' => $date);
+				$this->users->addRole($role);
+				}
 			}
             
             $this->database->commit();
 			
-			$this->redirect('Homepage:');
+			if ($this->edit == TRUE) {
+				$this->flashMessage('Uživatel byl aktualizován');
+			} else {
+				$this->flashMessage('Uživatel byl vytvořen');
+			}
+			
+			$this->redirect('Useredit:usersList');
+			
             //$this->redirect('Admin:default');
 
 		} catch (\Nette\Neon\Exception $e) {
@@ -203,5 +237,29 @@ class UsereditPresenter extends BasePresenter
 		$this->isNewEmployee = TRUE;
 		
 	}
+	
+	public function actionEditUser($id_user)
+    {
+        if ($this->user->isInRole('admin') || $this->user->isInRole('manažer')) {
+            $this->edit = true;
+			$this->userId = $id_user;
+			
+			$user = $this->users->vratUser($id_user);
+			$kontakty = $this->users->vratKontakty($id_user);
+			
+            $this['addUserForm']->setDefaults(array(
+                'jmeno' => $user->jmeno,
+                'login' => $user->login,
+				'telefon' => $kontakty->telefon,
+				'email' => $kontakty->email,
+				'ulice' => $kontakty->ulice,
+				'mesto' => $kontakty->mesto,
+				'psc' => $kontakty->psc
+            ));
+            $this->setView('default');
+        } else {
+            $this->setView('notAllowed');
+        }
+    }
 	
 }
