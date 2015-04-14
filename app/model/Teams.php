@@ -16,7 +16,7 @@ use Nette;
 class Teams extends Nette\Object {
     /** @var Nette\Database\Context */
     private $database;
-    
+    /** @var Projects */
     private $projekty;
 //------------------------------------------------------------------------------
     

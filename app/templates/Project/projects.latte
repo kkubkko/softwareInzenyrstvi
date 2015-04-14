@@ -8,7 +8,7 @@
         <div class="wrapper">
             <div class="container-fluid">
                 <div id="heading" class="page-header">
-                    <h1><i class="icon20 i-users"></i> Operace s projekty </h1>
+                    <h1 n:block=title><i class="icon20 i-users"></i> Operace s projekty </h1>
                 </div>
 
                         
@@ -34,6 +34,7 @@
                                                 <th>Editace</th>
                                                 <th>-</th>
                                                 <th>-</th>
+                                                <th>-</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -45,11 +46,20 @@
                                                 <td>{$pr->zakaznik->jmeno}</td>
                                                 <td>{$pr->tym->popis}</td>
                                                 <td>{$pr->popis}</td>
-                                                <td>{$pr->etapa}</td>
+                                                {if $pr->etapa == 'zahájení'}
+                                                    <td><a href="{link zahajit!, $pr->ID}">zahajit</a></td>
+                                                {else}    
+                                                    <td>{$pr->etapa}</td>
+                                                {/if}
                                                 <!--<td>{$pr->dokument->posledni_editace}</td>-->
                                                 <td>{$pr->dokument->posledni_editace}</td>
                                                 <td><a href="{link Project:editProject, $pr->ID, $pr->tym->ID, $pr->zakaznik->ID}">Edit</a></td>
                                                 <td><a href="{link delete!, $pr->ID}" onclick="return confirm('Smazat?')">Smazat</a></td>
+                                                {if $pr->etapa == 'zahájení'}
+                                                    <td>-<td>
+                                                {else}    
+                                                    <td><a href="{link Version:version, $pr->dokument_id}">dokument</a><td>
+                                                {/if}
                                             </tr>
                                             
           <!-- /Foreach na USERY -->      {/foreach}

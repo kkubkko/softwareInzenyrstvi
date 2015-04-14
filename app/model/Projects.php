@@ -20,12 +20,15 @@ class Projects extends Nette\Object {
 	private $database;
     /** @var Documents */
     private $dokumenty;
+    /** @var Versions */
+    private $verze;
 //------------------------------------------------------------------------------
 
-	public function __construct(Nette\Database\Context $database, Documents $documents)
+	public function __construct(Nette\Database\Context $database, Documents $documents, Versions $versions)
 	{
 		$this->database = $database;
         $this->dokumenty = $documents;
+        $this->verze = $versions;
 	}
 //------------------------------------------------------------------------------
     
@@ -45,7 +48,7 @@ class Projects extends Nette\Object {
                     'tym_id' => $id_tymu,
                     'dokument_id' => $id_dokumentu,
                     'popis' => $popis,
-                    'etapa' => 'zahajeni',
+                    'etapa' => 'zahájení',
                 ));
     }
 //------------------------------------------------------------------------------
@@ -66,7 +69,7 @@ class Projects extends Nette\Object {
         $pom = $this->database->table('Projekty')->where('ID = ?', $id_projekt)->fetch();
         return $pom->popis;
     }
- //------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
     
     public function zrusitProjekt($id_projekt)
     {
@@ -75,6 +78,32 @@ class Projects extends Nette\Object {
         $this->database->table('Projekty')->where('ID = ?', $id_projekt)->delete();
         $this->dokumenty->zrusitDokument($pom2);        
     }
+ //------------------------------------------------------------------------------
+    
+    public function vratProjekt($id_projekt)
+    {
+        $pom = $this->database->table('Projekty')->where('ID = ?', $id_projekt)->fetch();
+        return $pom;       
+    }
+ //------------------------------------------------------------------------------
+        
+    public function zahajitProjekt($id_projekt)
+    {
+        $proj = $this->vratProjekt($id_projekt);
+        try {
+            $this->database->beginTransaction();
+            $this->verze->vytvoritPrvniVerzi($proj->dokument_id);
+            $this->dokumenty->novaVerzeDokumentu($proj->dokument_id);
+            $this->database->table('Projekty')->where('ID = ?', $id_projekt)->update(array(
+                'etapa' => 'tvorba požadavků',
+            ));            
+            $this->database->commit();
+        } catch (Exception $ex) {
+            $this->database->rollBack();
+        }        
+    }
+
+
 //------------------------------------------------------------------------------  
     
     public function seznamNeukoncenychProjektu($id_tym)

@@ -113,6 +113,16 @@ class ProjectPresenter extends BasePresenter {
         }        
     }
     
+    public function handleZahajit($id_projekt)
+    {
+        if (!$this->user->isInRole('admin') && !$this->user->isInRole('manažer')) {
+            $this->setView('notAllowed');
+        } else {
+            $this->projekty->zahajitProjekt($id_projekt);
+            $this->flashMessage('Projekt byl zahajen!');
+        }        
+    }
+    
     public function actionProjects()
     {
         if (!$this->user->isInRole('admin') && !$this->user->isInRole('manažer')) {

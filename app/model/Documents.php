@@ -7,6 +7,9 @@
  * vraceni nejvyssiho id dokumentu
  * vytvoreni pocatecni verze po vytvoreni dokumentu
  * pridani pozadavku do noveho dokumentu
+ * aktualni verze
+ * vraceni dokumentu
+ * nova verze
  */
 
 
@@ -50,6 +53,17 @@ class Documents extends Nette\Object {
     }
 //------------------------------------------------------------------------------
     
+    public function novaVerzeDokumentu($id_dokument)
+    {
+        $pom = $this->vratDokument($id_dokument);
+        $this->database->table('Dokumenty')->where('ID = ?', $id_dokument)->update(array(
+            'aktualni_verze' => $pom->aktualni_verze + 1,
+            'posledni_editace' => date('Y-m-d'),
+        ));
+        
+    }
+//------------------------------------------------------------------------------
+    
     public function vytvorNovouVerzi($id_dokumentu)
     {
         $this->database->table('Verze')->insert(
@@ -75,5 +89,18 @@ class Documents extends Nette\Object {
     }
 //------------------------------------------------------------------------------
     
+    public function vratDokument($id_dokument)
+    {
+        $pom = $this->database->table('Dokumenty')->where('ID = ?', $id_dokument)->fetch();
+        return $pom;        
+    }
+//------------------------------------------------------------------------------
+    
+    public function aktualniVerze($id_dokument)
+    {
+        $pom = $this->database->table('Dokumenty')->where('ID = ?', $id_dokument);
+        return $pom->aktualni_verze;
+    }
+//------------------------------------------------------------------------------
 }
 

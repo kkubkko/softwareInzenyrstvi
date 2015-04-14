@@ -1,0 +1,23 @@
+{* Latte template *}
+
+{block content}
+
+<h1 n:block=title>Verze dokumentu</h1>
+
+{control versionForm}
+
+<h2>Upravy</h2>
+<table>
+    <thead>
+        <td>ID</td>
+        <td>Text</td>
+    </thead>
+    <tbody>
+        {foreach $upravy as $uprava}
+            <tr>
+                <td>{$uprava->ID}</td>
+                <td>{$uprava->Text}</td>
+            </tr>
+        {/foreach}
+    </tbody>    
+</table>

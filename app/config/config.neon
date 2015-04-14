@@ -29,3 +29,4 @@ services:
 	documents: App\Model\Documents
 	teams: App\Model\Teams
 	requests: App\Model\Requests
+	versions: App\Model\Versions
