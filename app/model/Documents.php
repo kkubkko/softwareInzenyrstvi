@@ -64,31 +64,6 @@ class Documents extends Nette\Object {
     }
 //------------------------------------------------------------------------------
     
-    public function vytvorNovouVerzi($id_dokumentu)
-    {
-        $this->database->table('Verze')->insert(
-                array(
-                    'dokument_id'     => $id_dokumentu, 
-                    'akt_etapa'       => 'zacatek',
-                    'verze'           => 0,
-                    'datum_vytvoreni' => date('Y-m-d'),
-                ));                
-    }
-//------------------------------------------------------------------------------
-    
-    public function priradPoptavkuDoPozadavku($id_poptavky, $id_verze)
-    {
-        $poptavka = $this->database->table('Poptavka')->get($id_poptavky);
-        
-        $this->database->table('Pozadavky')->insert(
-                array(
-                    'sluzby_id'    => $poptavka->sluzby_id,
-                    'specialni_id' => $poptavka->specialni_id,
-                    'verze_id'     => $id_verze,
-                ));        
-    }
-//------------------------------------------------------------------------------
-    
     public function vratDokument($id_dokument)
     {
         $pom = $this->database->table('Dokumenty')->where('ID = ?', $id_dokument)->fetch();
@@ -98,7 +73,7 @@ class Documents extends Nette\Object {
     
     public function aktualniVerze($id_dokument)
     {
-        $pom = $this->database->table('Dokumenty')->where('ID = ?', $id_dokument);
+        $pom = $this->database->table('Dokumenty')->where('ID = ?', $id_dokument)->fetch();
         return $pom->aktualni_verze;
     }
 //------------------------------------------------------------------------------

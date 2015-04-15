@@ -4,9 +4,7 @@
 namespace App\Presenters;
 
 use Nette,
-    App\Model,    
-	App\Model\Documents,
-    App\Model\Versions;
+    App\Model;
 
 /**
  * Description of VersionPresenter
@@ -16,9 +14,9 @@ use Nette,
 class VersionPresenter extends BasePresenter 
 {
     /** @var \App\Model\Documents @inject */
-    private $dokumenty;
+    public $dokumenty;
     /** @var \App\Model\Versions @inject */
-    private $verze;
+    public $verze;
     
     private $id_dok;
     private $ver;
@@ -33,7 +31,7 @@ class VersionPresenter extends BasePresenter
         }
         $form->addSelect('version', 'Zobrazit verzi', $pom_pole);
         $form->addHidden('doc', $this->id_dok);
-        $form->addSubmit('ok');
+        $form->addSubmit('ok', 'Nacist verzi');
         $form->onSuccess[] = array($this, 'versionFormSucceded');       
         return $form;       
     }
@@ -46,27 +44,23 @@ class VersionPresenter extends BasePresenter
     
     public function actionVersion($id_dokument, $verze = NULL)
     {
-        //if (!isset($this->dokumenty)){
-            //$this->setView('notAllowed');
-        //} else {
-        $pom = $this->dokumenty->vratDokument($id_dokument);
-            if (!isset($pom)) {
-                $this->setView('notFound');
+    $pom = $this->dokumenty->vratDokument($id_dokument);
+        if (!isset($pom)) {
+            $this->setView('notFound');
+        } else {
+            $this->id_dok = $id_dokument;
+            if (isset($verze) && $verze <= $pom->aktualni_verze && $verze > 0){
+                $this['versionForm']->setDefaults(array(
+                    'version' => $verze,
+                )); 
+                $this->ver = $verze;
             } else {
-                $this->id_dok = $id_dokument;
-                if (isset($verze) && $verze <= $pom->aktualni_verze && $verze > 0){
-                    $this['versionForm']->setDefaults(array(
-                        'version' => $verze,
-                    )); 
-                    $this->ver = $verze;
-                } else {
-                    $this['versionForm']->setDefaults(array(
-                        'version' => $pom->aktualni_verze,
-                    ));
-                    $this->ver = $pom->aktualni_verze;
-                }
+                $this['versionForm']->setDefaults(array(
+                    'version' => $pom->aktualni_verze,
+                ));
+                $this->ver = $pom->aktualni_verze;
             }
-        //}
+        }
     }
     
     public function renderVersion($id_dokument)

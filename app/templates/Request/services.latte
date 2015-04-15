@@ -1,0 +1,40 @@
+{* Latte template *}
+
+{block content}
+
+<h1 n:block=title>Seznam sluzeb</h1>
+
+{if !$user->isLoggedIn() || (!$user->isInRole('admin') && $user->isInRole('manažer'))}
+    <p>
+        Zde je uváděn seznam rozšiřujících služeb. V rámci jedné zakázky se předpokládá, že firma 
+        provede kompletní architektonický návrh, na základě něho projekt a násldně výstavbu přízemní 
+        nepodsklepené budovy a půdními prostorami.
+    </p>
+{/if}
+
+<table>
+    <thead>
+        <th>Nazev</th>
+        <th>Popis</th>
+        {if $user->isInRole('admin') || $user->isInRole('manažer')}
+            <td>-</td>
+            <td>-</td>
+        {/if}
+    </thead>
+    <tbody>
+        {foreach $sluzby as $sluzba}
+            <tr>
+                <td>{$sluzba->nazev}</td>
+                <td>{$sluzba->popis}</td>
+                {if $user->isInRole('admin') || $user->isInRole('manažer')}
+                    <td><a href="{link Request:editService, $sluzba->ID}">edit</a></td>
+                    <td><a href="{link delService!, $sluzba->ID}">smazat</a></td>
+                {/if}
+            </tr>
+        {/foreach}   
+    </tbody>
+</table>
+{if $user->isInRole('admin') || $user->isInRole('manažer')}
+    <p><a href="{link Request:editService}">pridat</a></p>
+{/if}   
+
