@@ -50,13 +50,14 @@ class Requests extends Nette\Object{
     {		
 		$data = array ( 'specialni_id' => $special_id,
 						'osoba_id' => $user_id,
-                        'datum' => date('Y-m-d'));		
-		$this->database->table('Poptavka')->insert($data);
+                        'datum' => date('Y-m-d'),	
+                        'stav' => 'čeká na posouzení');
+		return $this->database->table('Poptavka')->insert($data);
 	}
     
     public function addDemandService($id_service, $id_demand)
     {
-        return $this->database->table('Sluzby_poptavka')->insert(array(
+        return $this->database->table('Sluzba_poptavka')->insert(array(
             'sluzba_id' => $id_service,
             'poptavka_id' => $id_demand,
             'datum' => date('Y-m-d'),

@@ -130,6 +130,20 @@ class RequestPresenter extends BasePresenter
         } 
     }
     
+    public function actionAddDemand()
+    {
+        if (!$this->user->isLoggedIn()){
+            $this->setView('notAllowed');
+        }
+    }
+    
+    public function actionUserDemand()
+    {
+        if (!$this->user->isLoggedIn()){
+            $this->setView('notAllowed');
+        }
+    }
+    
     public function renderEditService()
     {
         if ($this->edit){
@@ -152,5 +166,16 @@ class RequestPresenter extends BasePresenter
     public function renderServices()
     {
         $this->template->sluzby = $this->requests->listOfServices();
+    }
+    
+    public function renderAddDemand()
+    {
+        
+    }
+    
+    public function renderUserDemand()
+    {
+        $dem = $this->requests->listOfUsersDemands($this->user->id);
+        $this->template->demands = $dem;
     }
 }
