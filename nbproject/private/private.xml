@@ -4,21 +4,17 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/C:/xampp/htdocs/SWI/app/presenters/VersionPresenter.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Projects.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Documents.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/presenters/RequestPresenter.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/templates/Homepage/default.latte</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Requests.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/templates/Request/addDemand.latte</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Versions.php</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/templates/Request/services.latte</file>
             <file>file:/C:/xampp/htdocs/SWI/app/templates/Request/detail.latte</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/presenters/ProjectPresenter.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/templates/Version/version.latte</file>
             <file>file:/C:/xampp/htdocs/SWI/app/templates/Request/userDemand.latte</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/presenters/TeamPresenter.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/templates/Project/projects.latte</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/presenters/RequestPresenter.php</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/model/Documents.php</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/model/Projects.php</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/templates/Homepage/default.latte</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/templates/Request/addDemand.latte</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/model/Requests.php</file>
             <file>file:/C:/xampp/htdocs/SWI/app/templates/Request/list.latte</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Teams.php</file>
+            <file>file:/C:/xampp/htdocs/SWI/app/templates/Useredit/usersList.latte</file>
         </group>
     </open-files>
 </project-private>

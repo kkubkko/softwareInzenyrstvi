@@ -21,33 +21,33 @@ class RequestPresenter extends BasePresenter
     private $edit = false;
     
     public function __construct(Nette\Database\Context $database)
-	{
-		$this->database = $database;
-	}
+    {
+            $this->database = $database;
+    }
 
-	protected function createComponentAddRequestForm()
-	{
-		$form = new Nette\Application\UI\Form;
-		$form->addText('nazev', 'Název:')
-			->setRequired('Prosim uvedte Název.');
-		
-		$form->addTextArea('popis', 'Popis:')
-			->addRule(Form::MAX_LENGTH, 'Poznámka je příliš dlouhá', 255)
-			->setRequired('Prosim uvedte Popis.');
+    protected function createComponentAddRequestForm()
+    {
+        $form = new Nette\Application\UI\Form;
+        $form->addText('nazev', 'Název:')
+                ->setRequired('Prosim uvedte Název.');
+
+        $form->addTextArea('popis', 'Popis:')
+                ->addRule(Form::MAX_LENGTH, 'Poznámka je příliš dlouhá', 255)
+                ->setRequired('Prosim uvedte Popis.');
         $form->addHidden('id', 0);
-		
-		if ($this->edit) {
+
+        if ($this->edit) {
             $form->addSubmit('send', 'Ulozit');
         } else {
             $form->addSubmit('send', 'Pridat');
         }
-		// call method signInFormSucceeded() on success
-		$form->onSuccess[] = array($this, 'addRequestFormSucceeded');
-		return $form;
-	}
+        // call method signInFormSucceeded() on success
+        $form->onSuccess[] = array($this, 'addRequestFormSucceeded');
+        return $form;
+    }
 
-	public function addRequestFormSucceeded($form, $values)
-	{			
+    public function addRequestFormSucceeded($form, $values)
+    {			
         $sluzby = array ( 'nazev' => $values['nazev'],
                           'popis' => $values['popis'] );
         if ($values['id'] == 0) {            
@@ -56,7 +56,7 @@ class RequestPresenter extends BasePresenter
             $this->requests->editService($sluzby, $values['id']);            
         }
         $this->redirect('Request:services');
-	}
+    }
     
     protected function createComponentAddDemandForm()
     {
@@ -100,6 +100,16 @@ class RequestPresenter extends BasePresenter
             $form->addError($ex->getMessage());
         }       
     }
+    
+    public function handleOdmitnout($id_demand)
+    {
+        if ($this->user->isInRole('admin') || $this->user->isInRole('manažer')){
+            $this->requests->rejectDemand($id_demand);
+            $this->redirect('Request:list');
+        } else {
+            $this->redirect('notAllowed');
+        }
+    }
 
     public function actionEditService($id_service = NULL)
     {
@@ -124,10 +134,14 @@ class RequestPresenter extends BasePresenter
     
     public function actionDetail($request_id)
     {
-		$request = $this->requests->vratRequest($request_id);
-        if (!isset($request)){
-            $this->setView('notFound');
-        } 
+        if ($this->user->isLoggedIn()) {
+            $request = $this->requests->vratDemand($request_id);
+            if (!isset($request)){
+                $this->setView('notFound');
+            }
+        } else {
+            $this->setView('notAllowed');
+        }
     }
     
     public function actionAddDemand()
@@ -153,15 +167,17 @@ class RequestPresenter extends BasePresenter
         }
     }
 
-
     public function renderDetail($request_id)
     {
-		$this->template->requests = $this->requests->vratRequest($request_id);
+        $dem = $this->requests->vratDemand($request_id);
+        $this->template->demand = $dem;
+        $this->template->services = $this->requests->vratDemandServices($dem->ID); 
     }
 
-	public function renderList() {
-		$this->template->requests = $this->requests->listOfRequests();
-	}
+    public function renderList() {
+        $this->template->demands = $this->requests->listOfActiveDemands();
+        $this->template->rejected = $this->requests->listOdDeactiveDemands();
+    }
     
     public function renderServices()
     {

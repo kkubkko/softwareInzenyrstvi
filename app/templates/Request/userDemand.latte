@@ -29,6 +29,7 @@
                                                 <th>Zakaznik</th>
                                                 <th>Datum poptavky</th>
                                                 <th>Stav</th>
+                                                <th>Datum zmeny stavu</th>
                                                 <th>-</th>
                                             </tr>
                                         </thead>
@@ -38,7 +39,12 @@
                                                 <td>{$demand->osoba->jmeno}</td>
                                                 <td>{$demand->datum}</td>
                                                 <td>{$demand->stav}</td>
-                                                <td><a href="{link Request:userDetail, $demand->ID}">Info</a></td>
+                                                {if $demand->stav != 'čeká na posouzení'}
+                                                    <td>{$demand->datum}</td>
+                                                {else}
+                                                    <td>-</td>
+                                                {/if}
+                                                <td><a href="{link Request:detail, $demand->ID}">Info</a></td>
                                             </tr>
                                             
           <!-- /Foreach na USERY -->      {/foreach}

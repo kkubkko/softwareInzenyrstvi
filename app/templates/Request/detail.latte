@@ -2,13 +2,38 @@
 
 {block content}
 
-{foreach $requests as $request}
-	<br>Nazov : {$request->sluzby->nazev}
-	<br>Popis : {$request->sluzby->popis}
-	<br>Specialni : {$request->specialni->text}
-{/foreach}
+<h1 n:block=title>Detail poptavky</h1>
 
-<br><br>
-<a href="{link Request:list}">Spět na seznam</a>
-<br>
+<p>
+    <b>Zakaznik: </b>{$demand->osoba->jmeno}<br />
+    <b>Datum: </b>{$demand->datum}<br />
+    <b>Stav: </b>{$demand->stav}<br />
+</p>
+<h2>Prirazene sluzby</h2>
+<p>
+        Zde je uváděn seznam rozšiřujících služeb. V rámci jedné zakázky se předpokládá, že firma 
+        provede kompletní architektonický návrh, na základě něho projekt a násldně výstavbu přízemní 
+        nepodsklepené budovy a půdními prostorami.
+</p>
+<table>
+    <thead>
+        <th>nazev</th>
+        <th>popis</th>
+    </thead>
+    <tbody>
+        {foreach $services as $service}
+            <tr>
+                <td>{$service->sluzba->nazev}</td>
+                <td>{$service->sluzba->popis}</td>
+            </tr>
+        {/foreach}
+    </tbody>
+</table>
+<p><b>Upresneni:</b>{$demand->specialni->text}</p>
+<br />
+{if ($user->isInRole('admin') || $user->isInRole('manažer')) && $demand->stav != 'odmitnuto'}
+    <a href="{link odmitnout!, $demand->ID}">Odmitnout</a>
+{/if}
+<br />
+<a href="{link Request:userDemand}">Zpět na seznam</a><br />
 <a href="{link Homepage:default}">Domu</a>
