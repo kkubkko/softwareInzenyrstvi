@@ -6,6 +6,33 @@
 
 {control versionForm}
 
+<h2>Upresnujici popis pozadavku</h2>
+{if isset($pozadavky)}
+    <p>{$pozadavky->specialni->text}</p>
+{else}
+    <p>nevyplneno</p>
+{/if}        
+
+<h2>Seznam nadstandartnich sluzeb</h2>
+<table>
+    <thead>
+        <td>nazev</td>
+        <td>popis</td>
+    </thead>
+    <tbody>
+        {foreach $sluzby as $sluzba}
+            <tr>
+                <td>{$sluzba->sluzba->ID}</td>
+                <td>{$sluzba->sluzba->Text}</td>
+            </tr>
+        {/foreach}
+    </tbody>    
+</table>
+<a href="{link upravit!}">Upravit pozadavky</a>
+{if isset($pozadavky)}
+    <a href="{link poptavka!}">Pridat poptavku</a>
+{/if} 
+    
 <h2>Upravy</h2>
 <table>
     <thead>
@@ -21,3 +48,20 @@
         {/foreach}
     </tbody>    
 </table>
+    
+<h2>Pripominky</h2>
+<table>
+    <thead>
+        <td>ID</td>
+        <td>Text</td>
+    </thead>
+    <tbody>
+        {foreach $pripominky as $pripominka}
+            <tr>
+                <td>{$pripominka->ID}</td>
+                <td>{$pripominka->Text}</td>
+            </tr>
+        {/foreach}
+    </tbody>    
+</table>
+    <a href="{link pripominka!}">Pridat pripominku</a>

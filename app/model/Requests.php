@@ -1,9 +1,24 @@
 <?php
 
 /* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * IMPLEMENTOVANO:
+ * Pridani upresnujicich informaci
+ * Pridani sluzby
+ * Editace sluzby
+ * seznam sluzeb
+ * vraceni konkretni sluzby
+ * pridani poptavky
+ * propojeni poptavky a sluzeb
+ * seznam neodmitnutych poptavek
+ * seznam odmitnutych poptavek
+ * seznam uzivatelovych poptavek
+ * seznam uzivatelovych aktivnich poptavek
+ * vraceni konktetni poptaky
+ * vraceni konktertniho propojeni poptavky a sluzby
+ * odmitnuti poptavky 
+ * prirazeni poptavky do pozadavku
+ * vraceni konkretniho pozadavku
+ * vraceni sluzeb pozadavku
  */
 
 namespace App\Model;
@@ -78,6 +93,11 @@ class Requests extends Nette\Object{
     {
         return $this->database->table('Poptavka')->where('osoba_id = ?', $id_user);
     }
+    
+    public function listOfUsersActiveDemands($id_user)
+    {
+        return $this->database->table('Poptavka')->where('osoba_id = ? AND stav <> ?', $id_user, 'odmitnuto');
+    }
 	
     public function vratDemand($request_id) {
         return $this->database->table('Poptavka')->where('ID = ?', $request_id)->fetch();
@@ -100,13 +120,36 @@ class Requests extends Nette\Object{
     public function priradPoptavkuDoPozadavku($id_poptavky, $id_verze)
     {
         $poptavka = $this->database->table('Poptavka')->get($id_poptavky);
+        $services = $this->vratDemandServices($poptavka->ID);
         
-        $this->database->table('Pozadavky')->insert(
-                array(
-                    'sluzby_id'    => $poptavka->sluzby_id,
-                    'specialni_id' => $poptavka->specialni_id,
-                    'verze_id'     => $id_verze,
-                ));        
+        $pom = $this->database->table('Pozadavky')->insert(
+            array(
+                'specialni_id' => $poptavka->specialni_id,
+                'verze_id'     => $id_verze,
+            ));
+        foreach ($services as $service) {
+            $this->database->table('Sluzba_pozadaky')->insert(array(
+                'sluzba_id' => $service->ID,
+                'pozadavky_id' => $pom->ID,
+            ));
+        }
+        $this->database->table('Upravy')->insert(array(
+            'verze_id' => $id_verze,
+            'text' => 'Prirazeni poptavky k pozadavkum',
+        ));
+        return $pom;
+    }
+    
+    public function vratPozadavkyProVerzi($id_verze)
+    {
+        $pom = $this->database->table('Pozadavky')->where('verze_id = ?', $id_verze)->fetch();
+        return $pom;
+    }
+    
+    public function vratSeznamSluzebProPozadavky($id_pozadavky)
+    {
+        $pom = $this->database->table('Sluzba_pozadavky')->where('pozadavky_id = ?', $id_pozadavky);
+        return $pom;
     }
 	
 }

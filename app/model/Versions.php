@@ -1,8 +1,9 @@
 <?php
 /**
  * IMPLEMENTOVANO:
- * vraceni aktualni verze
+ * vraceni cisla aktualni verze
  * nacteni verze
+ * nacteni aktualni verze
  * vytvoreni prvni verze
  * vytvoreni dalsi verze
  */
@@ -41,6 +42,12 @@ class Versions extends Nette\Object
         return $pom;
     }
     
+    public function nactiAktualniVerzi($id_dokument)
+    {
+        $verze = $this->aktualniVerze($id_dokument);
+        return $this->nactiVerzi($id_dokument, $verze);
+    }
+    
     public function vytvoritPrvniVerzi($id_dokumentu)
     {            
         $pom = $this->database->table('Verze')->insert(array(
@@ -68,7 +75,7 @@ class Versions extends Nette\Object
     public function seznamPripominekVerzeDoc($id_dokument, $verze)
     {
         $ver = $this->nactiVerzi($id_dokument, $verze);
-        if (isset($ver)){
+        if ($ver){
             return $this->seznamPripominek($ver->ID);
         }        
     }
@@ -76,7 +83,7 @@ class Versions extends Nette\Object
     public function seznamUpravVerzeDoc($id_dokument, $verze)
     {
         $ver = $this->nactiVerzi($id_dokument, $verze);
-        if (isset($ver)){
+        if ($ver){
             return $this->seznamUprav($ver->ID);
         }        
     }

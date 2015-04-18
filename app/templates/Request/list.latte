@@ -31,6 +31,8 @@
                                               <th>Stav</th>
                                               <th>Datum zmeny stavu</th>
                                               <th>-</th>
+                                              <th>-</th>
+                                              <th>-</th>
                                           </tr>
                                       </thead>
                                       <tbody>
@@ -45,6 +47,8 @@
                                                   <td>-</td>
                                               {/if}
                                               <td><a href="{link Request:detail, $demand->ID}">Info</a></td>
+                                              <td><a href="{link Request:acceptDemand, $demand->ID}">Prijmout</a></td>
+                                              <td><a href="{link odmitnout!, $demand->ID}" onclick="return confirm('Odmitnout?')">Odmitnout</a></td>
                                           </tr>
 
         <!-- /Foreach na USERY -->      {/foreach}

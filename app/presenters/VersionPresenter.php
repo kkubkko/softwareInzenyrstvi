@@ -17,9 +17,12 @@ class VersionPresenter extends BasePresenter
     public $dokumenty;
     /** @var \App\Model\Versions @inject */
     public $verze;
+    /** @var \App\Model\Requests @inject */
+    public $pozadavky;
     
     private $id_dok;
     private $ver;
+    private $poz;
     
     protected function createComponentVersionForm()
     {
@@ -44,8 +47,8 @@ class VersionPresenter extends BasePresenter
     
     public function actionVersion($id_dokument, $verze = NULL)
     {
-    $pom = $this->dokumenty->vratDokument($id_dokument);
-        if (!isset($pom)) {
+        $pom = $this->dokumenty->vratDokument($id_dokument);
+        if (!$pom) {
             $this->setView('notFound');
         } else {
             $this->id_dok = $id_dokument;
@@ -66,7 +69,17 @@ class VersionPresenter extends BasePresenter
     public function renderVersion($id_dokument)
     {
         $this->template->pripominky = $this->verze->seznamPripominekVerzeDoc($id_dokument, $this->ver);
-        $this->template->upravy = $this->verze->seznamUpravVerzeDoc($id_dokument, $this->ver);        
+        $this->template->upravy = $this->verze->seznamUpravVerzeDoc($id_dokument, $this->ver);
+        $prac_verze = $this->verze->nactiVerzi($id_dokument, $this->ver);
+        $jina_prom = $this->pozadavky->vratPozadavkyProVerzi($prac_verze->ID);
+        $this->poz = $jina_prom;
+        if ($jina_prom) {
+            $this->template->pozadavky = $jina_prom;
+            $this->template->sluzby = $this->pozadavky->vratSeznamSluzebProPozadavky($jina_prom->ID);
+        } else {
+            $this->template->pozadavky = null;
+            $this->template->sluzby = $this->pozadavky->vratSeznamSluzebProPozadavky(-1);;
+        }
     }
 
 }

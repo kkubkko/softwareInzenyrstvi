@@ -2,6 +2,8 @@
 /**
  * IMPLEMENTOVANO:
  * vraceni seznamu projektu
+ * vraceni seznamu projektu uzivatele
+ * vraceni seznamu projektu uzivatele v dane etape
  * vytvoreni noveho projektu
  * editace projetktu
  * vraceni popisu projektu
@@ -35,6 +37,20 @@ class Projects extends Nette\Object {
     public function seznamProjektu()
     {
         $pom = $this->database->table('Projekty');
+        return $pom;
+    }
+//------------------------------------------------------------------------------
+    
+    public function seznamProjektuUzivatele($id_zakaznik)
+    {
+        $pom = $this->database->table('Projekty')->where('zakaznik_id = ?', $id_zakaznik);
+        return $pom;        
+    }
+    
+    public function seznamProjektuUzivateleEtapa($id_zakaznik, $etapa)
+    {
+        $pom = $this->database->table('Projekty')
+                ->where('zakaznik_id = ? AND etapa = ?', $id_zakaznik, $etapa/*'tvorba požadavků'*/);
         return $pom;
     }
 //------------------------------------------------------------------------------

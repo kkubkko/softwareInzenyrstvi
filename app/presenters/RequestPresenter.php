@@ -16,9 +16,18 @@ class RequestPresenter extends BasePresenter
 
 	/** @var \App\Model\Requests @inject */
     public $requests;
+    /** @var \App\Model\Projects @inject */
+    public $projects;
+    /** @var \App\Model\Documents @inject */
+    public $documents;
+    /** @var \App\Model\Versions @inject */
+    public $versions;
     /** @var Nette\Database\Context */
     private $database;
     private $edit = false;
+    private $accept = true; 
+    private $customer;
+    private $identif;
     
     public function __construct(Nette\Database\Context $database)
     {
@@ -98,7 +107,64 @@ class RequestPresenter extends BasePresenter
         } catch (Nette\Neon\Exception $ex) {
             $this->database->rollBack();
             $form->addError($ex->getMessage());
-        }       
+        } 
+        $this->redirect('Request:userDemand');
+    }
+    
+    protected function createComponentAcceptForm()
+    {
+        $form = new Nette\Application\UI\Form;
+        
+        if ($this->accept) {
+            $pole = $this->projects->seznamProjektuUzivateleEtapa($this->customer,'tvorba požadavků');
+            $popis = 'Priradit k projektu';
+        } else {
+            $pole = $this->requests->listOfUsersActiveDemands($this->customer); 
+            $popis = 'Priradit poptavku z data';
+        }
+        foreach ($pole as $prvek){
+            if ($this->accept) {
+                $sel_pole[$prvek->ID] = $prvek->datum;                
+            } else {
+                $sel_pole[$prvek->ID] = $prvek->popis;
+            }
+        }
+        
+        $form->addHidden('accept', $this->accept);
+        $form->addHidden('zakaznik',  $this->customer);
+        $form->addHidden('identif', $this->identif);// id_project or id_demand
+        $form->addSelect('prvek',$popis,$sel_pole)
+                ->setPrompt('Vyberte')
+                ->setRequired('Musite vyvrat jednu polozku!');
+        $form->addSubmit('ok', 'Priradit');
+        $form->onSuccess[] = array($this, 'acceptFormSucceded');
+        return $form;
+    }
+    
+    public function acceptFormSucceded($form)
+    {
+        $hodnoty = $form->values;
+        try {
+            $this->database->beginTransaction();
+            $id_zakaznik = $hodnoty->zakaznik;
+            if ($hodnoty->accept){
+                $id_demand = $hodnoty->identif;
+                $id_project = $hodnoty->prvek;               
+            } else {
+                $id_project = $hodnoty->identif;
+                $id_demand = $hodnoty->prvek;               
+            }
+            $proj = $this->projects->vratProjekt($id_project);
+            //$doc = $this->documents->vratDokument($proj->dokument_id);
+            $verze = $this->versions->vytvoritDalsiVerzi($proj->dokument_id);
+            $this->documents->novaVerzeDokumentu($proj->dokument_id);
+            $this->requests->priradPoptavkuDoPozadavku($id_demand, $verze-ID);                  
+            $this->database->commit();
+        } catch (Nette\Neon\Exception $ex) {
+            $this->database->rollBack();
+            $form->addError($ex->getMessage());           
+        }
+            
     }
     
     public function handleOdmitnout($id_demand)
@@ -116,7 +182,7 @@ class RequestPresenter extends BasePresenter
         if ($this->user->isInRole('admin') || $this->user->isInRole('manažer')){
             if (isset($id_service)){
                 $service = $this->requests->detailOfService($id_service);
-                if (isset($service)){
+                if ($service){
                     $this['addRequestForm']->setDefaults(array(
                         'id'    => $service->ID,
                         'nazev' => $service->nazev,
@@ -136,7 +202,7 @@ class RequestPresenter extends BasePresenter
     {
         if ($this->user->isLoggedIn()) {
             $request = $this->requests->vratDemand($request_id);
-            if (!isset($request)){
+            if (!$request){
                 $this->setView('notFound');
             }
         } else {
@@ -154,6 +220,49 @@ class RequestPresenter extends BasePresenter
     public function actionUserDemand()
     {
         if (!$this->user->isLoggedIn()){
+            $this->setView('notAllowed');
+        }
+    }
+    
+    public function actionAcceptDemand($id_demnad)
+    {
+        if ($this->user->isInRole('admin') || $this->user->isInRole('manažer')){
+            $dem = $this->requests->vratDemand($id_demnad);
+            if (!$dem){
+                $this->setView('notFound');
+            } else {
+                $proj = $this->projects->seznamProjektuUzivateleEtapa($dem->osoba_id, 'tvorba požadavků');
+                if ($proj->count() <= 0) {
+                    $this->setView('notFound');
+                } else {
+                    $this->accept = true;
+                    $this->customer = $dem->osoba_id;
+                    $this->identif = $id_demnad;
+                }
+            }
+        } else {
+            $this->setView('notAllowed');
+        }        
+    }
+    
+    public function acctionAddDemandToProj($id_project)
+    {
+        if ($this->user->isInRole('admin') || $this->user->isInRole('manažer')){
+            $proj = $this->projects->vratProjekt($id_project);
+            if (!$proj){
+                $this->setView('notFound');
+            } else {
+                $dem = $this->requests->listOfUsersActiveDemands($proj->zakaznik_id);
+                if ($dem->count() <= 0) {
+                    $this->setView('notFound');
+                } else {
+                    $this->accept = false;
+                    $this->customer = $proj->zakaznik_id;
+                    $this->identif = $id_project;
+                    $this->setView('acceptDemand');
+                }
+            }            
+        } else {
             $this->setView('notAllowed');
         }
     }
@@ -193,5 +302,15 @@ class RequestPresenter extends BasePresenter
     {
         $dem = $this->requests->listOfUsersDemands($this->user->id);
         $this->template->demands = $dem;
+    }
+    
+    public function renderAcceptDemand()
+    {
+        if ($this->accept){
+            $nadpis = 'Akceptovat poptavku';
+        } else {
+            $nadpis = 'Prirazeni poptavky';
+        }
+        $this->template->nadpis = $nadpis;
     }
 }
