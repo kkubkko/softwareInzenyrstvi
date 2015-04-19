@@ -6,6 +6,9 @@
  * nacteni aktualni verze
  * vytvoreni prvni verze
  * vytvoreni dalsi verze
+ * seznam pripominek k dane verzi dokumentu
+ * seznam uprav k dane verzi dokumentu
+ * seznam uprav a pripominek
  */
 
 
@@ -98,5 +101,28 @@ class Versions extends Nette\Object
     {
         $pom = $this->database->table('Upravy')->where('verze_id = ?', $id_verze);
         return $pom;        
+    }
+    
+    public function pridejPripominku($text, $id_verze){
+        $pom = $this->database->table('Propominky')->insert(array(
+            'text' => $text,
+            'verze_id' => $id_verze,
+        ));
+        return $pom;
+    }
+    
+    public function pridejUpravu($text, $id_verze)
+    {
+        $pom = $this->database->table('Upravy')->insert(array(
+            'verze_id' => $id_verze,
+            'text' => $text,
+        ));
+        return $pom;
+    }
+    
+    public function vratVerziProID($id_verze)
+    {
+        $pom = $this->database->table('Verze')->where('ID = ?', $id_verze)->fetch();
+        return $pom;
     }
 }

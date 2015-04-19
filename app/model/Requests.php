@@ -128,8 +128,8 @@ class Requests extends Nette\Object{
                 'verze_id'     => $id_verze,
             ));
         foreach ($services as $service) {
-            $this->database->table('Sluzba_pozadaky')->insert(array(
-                'sluzba_id' => $service->ID,
+            $this->database->table('Sluzba_pozadavky')->insert(array(
+                'sluzba_id' => $service->sluzba_id,
                 'pozadavky_id' => $pom->ID,
             ));
         }

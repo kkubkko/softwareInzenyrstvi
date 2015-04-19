@@ -123,7 +123,7 @@ class RequestPresenter extends BasePresenter
             $popis = 'Priradit poptavku z data';
         }
         foreach ($pole as $prvek){
-            if ($this->accept) {
+            if (!$this->accept) {
                 $sel_pole[$prvek->ID] = $prvek->datum;                
             } else {
                 $sel_pole[$prvek->ID] = $prvek->popis;
@@ -158,7 +158,7 @@ class RequestPresenter extends BasePresenter
             //$doc = $this->documents->vratDokument($proj->dokument_id);
             $verze = $this->versions->vytvoritDalsiVerzi($proj->dokument_id);
             $this->documents->novaVerzeDokumentu($proj->dokument_id);
-            $this->requests->priradPoptavkuDoPozadavku($id_demand, $verze-ID);                  
+            $this->requests->priradPoptavkuDoPozadavku($id_demand, $verze->ID);                  
             $this->database->commit();
         } catch (Nette\Neon\Exception $ex) {
             $this->database->rollBack();
@@ -200,7 +200,7 @@ class RequestPresenter extends BasePresenter
     
     public function actionDetail($request_id)
     {
-        if ($this->user->isLoggedIn()) {
+        if ($this->user->isLoggedIn() /*&& ($this->user->isInRole('zákazník') || $this->user->isInRole('admin') || $this->user->isInRole('manažer'))*/) {
             $request = $this->requests->vratDemand($request_id);
             if (!$request){
                 $this->setView('notFound');
@@ -212,14 +212,14 @@ class RequestPresenter extends BasePresenter
     
     public function actionAddDemand()
     {
-        if (!$this->user->isLoggedIn()){
+        if (!$this->user->isLoggedIn() /*&& ($this->user->isInRole('zákazník') || $this->user->isInRole('admin') || $this->user->isInRole('manažer'))*/){
             $this->setView('notAllowed');
         }
     }
     
     public function actionUserDemand()
     {
-        if (!$this->user->isLoggedIn()){
+        if (!$this->user->isLoggedIn() /*&& $this->user->isInRole('zákazník')*/){
             $this->setView('notAllowed');
         }
     }
@@ -245,7 +245,7 @@ class RequestPresenter extends BasePresenter
         }        
     }
     
-    public function acctionAddDemandToProj($id_project)
+    public function actionAddDemandProject($id_project)
     {
         if ($this->user->isInRole('admin') || $this->user->isInRole('manažer')){
             $proj = $this->projects->vratProjekt($id_project);
@@ -281,6 +281,13 @@ class RequestPresenter extends BasePresenter
         $dem = $this->requests->vratDemand($request_id);
         $this->template->demand = $dem;
         $this->template->services = $this->requests->vratDemandServices($dem->ID); 
+    }
+    
+    public function actionList()
+    {
+        if (!$this->user->isInRole('admin') && !$this->user->isInRole('manažer')){
+            $this->setView('notAllowed');
+        }
     }
 
     public function renderList() {

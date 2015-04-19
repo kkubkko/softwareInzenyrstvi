@@ -108,7 +108,8 @@ class Projects extends Nette\Object {
         $proj = $this->vratProjekt($id_projekt);
         try {
             $this->database->beginTransaction();
-            $this->verze->vytvoritPrvniVerzi($proj->dokument_id);
+            $pom = $this->verze->vytvoritPrvniVerzi($proj->dokument_id);
+            $this->verze->pridejUpravu('Zahajen projekt', $pom->ID);
             $this->dokumenty->novaVerzeDokumentu($proj->dokument_id);
             $this->database->table('Projekty')->where('ID = ?', $id_projekt)->update(array(
                 'etapa' => 'tvorba požadavků',

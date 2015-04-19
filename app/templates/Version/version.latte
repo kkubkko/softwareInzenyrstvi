@@ -23,15 +23,18 @@
         {foreach $sluzby as $sluzba}
             <tr>
                 <td>{$sluzba->sluzba->ID}</td>
-                <td>{$sluzba->sluzba->Text}</td>
+                <td>{$sluzba->sluzba->popis}</td>
             </tr>
         {/foreach}
     </tbody>    
 </table>
-<a href="{link upravit!}">Upravit pozadavky</a>
-{if isset($pozadavky)}
-    <a href="{link poptavka!}">Pridat poptavku</a>
-{/if} 
+{if $aktualni}
+    {if !isset($pozadavky)}
+        <a href="{link Request:addDemandProject, $projekt->ID}">Pridat poptavku</a>
+    {else}
+        <a href="{link upravit!}">Upravit pozadavky</a>
+    {/if} 
+{/if}
     
 <h2>Upravy</h2>
 <table>
@@ -43,7 +46,7 @@
         {foreach $upravy as $uprava}
             <tr>
                 <td>{$uprava->ID}</td>
-                <td>{$uprava->Text}</td>
+                <td>{$uprava->text}</td>
             </tr>
         {/foreach}
     </tbody>    
@@ -64,4 +67,6 @@
         {/foreach}
     </tbody>    
 </table>
+{if $aktualni}    
     <a href="{link pripominka!}">Pridat pripominku</a>
+{/if}

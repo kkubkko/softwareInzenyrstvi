@@ -77,5 +77,11 @@ class Documents extends Nette\Object {
         return $pom->aktualni_verze;
     }
 //------------------------------------------------------------------------------
+    
+    public function vratProjektDokumentu($id_doc)
+    {
+        $pom = $this->database->table('Projekty')->where('dokument_id = ?', $id_doc)->fetch();
+        return $pom;
+    }    
 }
 
