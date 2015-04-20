@@ -4,10 +4,13 @@
  * vraceni seznamu projektu
  * vraceni seznamu projektu uzivatele
  * vraceni seznamu projektu uzivatele v dane etape
+ * seznam projektu bez poptavky
  * vytvoreni noveho projektu
  * editace projetktu
  * vraceni popisu projektu
  * ruseni projektu
+ * vrat poptavku k projektu
+ * priradit poptavku k projektu
  * funkce, ktere edituji osobu - budou smazany!
  */
 namespace App\Model;
@@ -52,6 +55,14 @@ class Projects extends Nette\Object {
         $pom = $this->database->table('Projekty')
                 ->where('zakaznik_id = ? AND etapa = ?', $id_zakaznik, $etapa/*'tvorba požadavků'*/);
         return $pom;
+    }
+//------------------------------------------------------------------------------
+    
+    public function seznamProjektuBezPoptavky($id_zakaznik)
+    {
+        $pom = $this->database->table('Projekty')
+                ->where('zakaznik_id = ? AND etapa = ? AND poptavka_id IS NULL',$id_zakaznik, 'tvorba požadavků');
+        return $pom;        
     }
 //------------------------------------------------------------------------------
     
@@ -143,5 +154,18 @@ class Projects extends Nette\Object {
                     'jmeno' => $jmeno,
                     'heslo' => $this->vratHeslo($heslo),
                 ));
+    }
+    
+    public function vratProjektPoptavky($id_demand)
+    {
+        $pom = $this->database->table('Projekty')->where('poptavka_id = ?', $id_demand)->fetch();
+        return $pom;
+    }
+    
+    public function priraditPoptavkuProjektu($id_projekt, $id_poptavka)
+    {
+        $this->database->table('Projekty')->where('ID = ?', $id_projekt)->update(array(
+            'poptavka_id' => $id_poptavka,
+        ));        
     }
 }

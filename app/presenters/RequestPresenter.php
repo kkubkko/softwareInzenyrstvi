@@ -122,7 +122,8 @@ class RequestPresenter extends BasePresenter
         $form = new Nette\Application\UI\Form;
         
         if ($this->accept) {
-            $pole = $this->projects->seznamProjektuUzivateleEtapa($this->customer,'tvorba požadavků');
+            //$pole = $this->projects->seznamProjektuUzivateleEtapa($this->customer,'tvorba požadavků');
+            $pole = $this->projects->seznamProjektuBezPoptavky($this->customer);
             $popis = 'Priradit k projektu';
         } else {
             $pole = $this->requests->listOfUsersActiveDemands($this->customer); 
@@ -164,12 +165,14 @@ class RequestPresenter extends BasePresenter
             //$doc = $this->documents->vratDokument($proj->dokument_id);
             $verze = $this->versions->vytvoritDalsiVerzi($proj->dokument_id);
             $this->documents->novaVerzeDokumentu($proj->dokument_id);
-            $this->requests->priradPoptavkuDoPozadavku($id_demand, $verze->ID);                  
+            $this->requests->priradPoptavkuDoPozadavku($id_demand, $verze->ID);
+            $this->projects->priraditPoptavkuProjektu($id_project, $id_demand);
             $this->database->commit();
         } catch (Nette\Neon\Exception $ex) {
             $this->database->rollBack();
             $form->addError($ex->getMessage());           
         }
+        $this->redirect('Version:version', $proj->dokument_id);
             
     }
     
@@ -181,6 +184,20 @@ class RequestPresenter extends BasePresenter
         } else {
             $this->redirect('notAllowed');
         }
+    }
+    
+    public function handleDokument($id_demand)
+    {
+        if ($this->user->isInRole('admin') || $this->user->isInRole('manažer')){
+            $proj = $this->projects->vratProjektPoptavky($id_demand);
+            if (!$proj) {
+                $this->redirect('notFound');
+            } else {
+                $this->redirect('Version:version', $proj->dokument_id);
+            }
+        } else {
+            $this->redirect('notAllowed');
+        }        
     }
 
     public function actionEditService($id_service = NULL)
@@ -237,7 +254,7 @@ class RequestPresenter extends BasePresenter
             if (!$dem){
                 $this->setView('notFound');
             } else {
-                $proj = $this->projects->seznamProjektuUzivateleEtapa($dem->osoba_id, 'tvorba požadavků');
+                $proj = $this->projects->seznamProjektuBezPoptavky($dem->osoba_id);
                 if ($proj->count() <= 0) {
                     $this->setView('notFound');
                 } else {

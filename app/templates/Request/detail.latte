@@ -31,9 +31,18 @@
 </table>
 <p><b>Upresneni:</b>{$demand->specialni->text}</p>
 <br />
-{if ($user->isInRole('admin') || $user->isInRole('manažer')) && $demand->stav != 'odmitnuto'}
+{if $user->isInRole('admin') || $user->isInRole('manažer')}
+    {if $demand->stav != 'odmitnuto' && $demand->stav != 'přijato'}
     <a href="{link odmitnout!, $demand->ID}">Odmitnout</a>
+    {/if}
+    {if $demand->stav == 'přijato'}
+    <a href="{link dokument!, $demand->ID}">Dokument</a>    
+    {/if}
+    <br />
+    <a href="{link Request:list}">Zpět na seznam</a> 
+{else}
+    <br />
+    <a href="{link Request:userDemand}">Zpět na seznam</a>  
 {/if}
 <br />
-<a href="{link Request:userDemand}">Zpět na seznam</a><br />
 <a href="{link Homepage:default}">Domu</a>

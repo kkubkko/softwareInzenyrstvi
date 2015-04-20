@@ -37,20 +37,12 @@
 {/if}
     
 <h2>Upravy</h2>
-<table>
-    <thead>
-        <td>ID</td>
-        <td>Text</td>
-    </thead>
-    <tbody>
-        {foreach $upravy as $uprava}
-            <tr>
-                <td>{$uprava->ID}</td>
-                <td>{$uprava->text}</td>
-            </tr>
-        {/foreach}
-    </tbody>    
-</table>
+<p>
+{foreach $upravy as $uprava}
+    <b>Text: </b>{$uprava->text}<br />
+{/foreach}
+</p>
+
     
 <h2>Pripominky</h2>
 <table>
@@ -62,11 +54,11 @@
         {foreach $pripominky as $pripominka}
             <tr>
                 <td>{$pripominka->ID}</td>
-                <td>{$pripominka->Text}</td>
+                <td>{$pripominka->text}</td>
             </tr>
         {/foreach}
     </tbody>    
 </table>
 {if $aktualni}    
-    <a href="{link pripominka!}">Pridat pripominku</a>
+    <a href="{link Version:addPrompt, $verze->ID}">Pridat pripominku</a>
 {/if}

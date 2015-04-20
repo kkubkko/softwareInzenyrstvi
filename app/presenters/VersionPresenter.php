@@ -4,6 +4,7 @@
 namespace App\Presenters;
 
 use Nette,
+    Nette\Application\UI\Form,
     App\Model;
 
 /**
@@ -73,6 +74,50 @@ class VersionPresenter extends BasePresenter
         $this->redirect('Version:version', $ver->dokument_id);
     }
     
+    protected function createComponentAddDemandForm()
+    {
+        $form = new Nette\Application\UI\Form;
+        
+        $demand = $this->requests->listOfServices();
+        
+        foreach ($demand as $dem){
+            $sel_dem[$dem->ID] = $dem->nazev;
+        }
+        
+        $form->addCheckboxList('services', 'Vyber sluzeb', $sel_dem)
+                ;//->setRequired('Musite vybrat aspon jednu sluzbu!');
+        
+        $form->addText('spec','Upresneni poptavky')
+                ->addRule(Form::MAX_LENGTH, 'Text je příliš dlouhy', 255)
+                ->setRequired('Uvedte prosim upresnujici popis!');
+        
+        $form->addSubmit('send', 'Pridat');
+        
+        $form->onSuccess[] = array($this, 'addDemandFormSucceded');
+        return $form;        
+    }
+    
+    public function addDemandFormSucceded($form)
+    {
+        $hodnoty = $form->values;
+        
+        try {
+            $this->database->beginTransaction();
+            
+            $special = array('text' => $hodnoty->spec);
+            $db_spec = $this->requests->addSpecial($special);
+            $db_dem = $this->requests->addDemand($db_spec->ID, $this->user->id);
+            foreach ($hodnoty->services as $service){
+                $this->requests->addDemandService($service, $db_dem->ID);
+            }            
+            $this->database->commit();
+        } catch (Nette\Neon\Exception $ex) {
+            $this->database->rollBack();
+            $form->addError($ex->getMessage());
+        } 
+        $this->redirect('Request:userDemand');
+    }
+    
     public function actionVersion($id_dokument, $verze = NULL)
     {
         $pom = $this->dokumenty->vratDokument($id_dokument);
@@ -95,6 +140,22 @@ class VersionPresenter extends BasePresenter
         }
     }
     
+    public function actionAddPrompt($id_verze)
+    {
+        if ($this->user->isLoggedIn()) {
+            $ver = $this->verze->vratVerziProID($id_verze);
+            if ($ver){
+                $this['promptForm']->setDefaults(array(
+                    'id_verze' => $id_verze,
+                ));
+            } else {
+                $this->setView('notFound');
+            }
+        } else {
+            $this->setView('notAllowed');
+        }
+    }
+    
     public function renderVersion($id_dokument)
     {
         if ($this->ver == $this->aktualni){
@@ -106,6 +167,7 @@ class VersionPresenter extends BasePresenter
         $this->template->pripominky = $this->verze->seznamPripominekVerzeDoc($id_dokument, $this->ver);
         $this->template->upravy = $this->verze->seznamUpravVerzeDoc($id_dokument, $this->ver);
         $prac_verze = $this->verze->nactiVerzi($id_dokument, $this->ver);
+        $this->template->verze = $prac_verze;
         $jina_prom = $this->pozadavky->vratPozadavkyProVerzi($prac_verze->ID);
         //$this->poz = $jina_prom;
         if ($jina_prom) {

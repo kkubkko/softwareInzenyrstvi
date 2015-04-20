@@ -104,7 +104,7 @@ class Versions extends Nette\Object
     }
     
     public function pridejPripominku($text, $id_verze){
-        $pom = $this->database->table('Propominky')->insert(array(
+        $pom = $this->database->table('Pripominky')->insert(array(
             'text' => $text,
             'verze_id' => $id_verze,
         ));
