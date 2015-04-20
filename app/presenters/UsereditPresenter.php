@@ -96,16 +96,17 @@ class UsereditPresenter extends BasePresenter
 		
 			if ($this->isNewEmployee == TRUE) {
 			$roles = $this->users->rolesForEmployees();
-		} else {
-			$roles = $this->users->rolesForCustomer();
-		}
-
-		foreach ($roles as $role) {
+			
+			foreach ($roles as $role) {
 				$arr_roles[$role->ID] = $role->nazev;
 			}
 			$form->addSelect('role', 'Role:', $arr_roles)
 					->setRequired('Prosím zadejte roli.')
 					->setPrompt('Volba role');
+
+		} else {
+			$roles = $this->users->rolesForCustomer();
+		}
 			
 	} 
 		
@@ -169,7 +170,7 @@ class UsereditPresenter extends BasePresenter
 				$this->users->addContacts($contacts);
 				
 				$date = /*DateTime::getTimestamp();*/ date('Y-m-d');
-				$role= array(	'role_id' => $values['role'],
+				$role= array(	'role_id' => '1',
 							'osoby_id' => $userId,
 							'datum_prirazeni' => $date);
 				$this->users->addRole($role);
