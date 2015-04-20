@@ -125,6 +125,13 @@ class UsereditPresenter extends BasePresenter
 		if ($values["heslo"] != $values["zopakovaneHeslo"]) { // validační podmínka
 			$form->addError('Heslá se neshodují');
 		}
+		
+		$users = $this->users->listOfUsers();
+		foreach ($users as $actual) {
+			if ($actual->login == $values['login']) {
+				$form->addError('Takový login již existuje');
+			}
+		}
 	}
 
 	public function addUserFormSucceeded($form, $values)
