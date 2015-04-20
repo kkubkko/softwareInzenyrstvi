@@ -42,8 +42,23 @@ class UsereditPresenter extends BasePresenter
     }
 	
 	public function actionDelete($id) {
-		$this->users->deleteUser($id);
-		$this->redirect('useredit:usersList');
+		$canDelete = TRUE;
+		
+		$tymy = $this->users->vratTymy($id);
+		foreach ($tymy as $tym) {
+			if ($tym->tym->ukoncen == FALSE) {
+				$canDelete = FALSE;
+			}
+		}
+		
+		if ($canDelete == TRUE) {
+			$this->users->deleteUser($id);
+			$this->redirect('useredit:usersList');
+		} else {
+			$this->flashMessage('Uživatel je součástí aktivního týmu.');
+			$this->redirect('useredit:usersList');
+		}
+		
 	}
 	
 	public function emailValidator($item, $arg) {
