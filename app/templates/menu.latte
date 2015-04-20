@@ -9,36 +9,48 @@
                 <div class="sidebar-wrapper">
                     <nav id="mainnav">
                         <ul class="nav nav-list"> 
-                            <li>
-                                <a href="{link Homepage:default}">
-                                    <span class="icon"><i class="icon20   i-pencil-5"></i></span>
-                                    <span class="txt"> Domů </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{link Project:projects}">
-                                    <span class="icon"><i class="icon20  i-tag"></i></span>
-                                    <span class="txt"> Správa projektů </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{link Request:list}">
-                                    <span class="icon"><i class="icon20  i-tag"></i></span>
-                                    <span class="txt"> Správa poptávek </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{link Useredit:usersList}">
-                                    <span class="icon"><i class="icon20 i-user"></i></span>
-                                    <span class="txt"> Správa uživatelů </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{link Team:teams}">
-                                    <span class="icon"><i class="icon20  i-office"></i></span>
-                                    <span class="txt"> Správa týmů </span>
-                                </a>
-                            </li>
+                            {ifset $user_role}
+                                {if ($user_role==2)}
+                                    <li>
+                                        <a href="{link Homepage:default}">
+                                            <span class="icon"><i class="icon20   i-pencil-5"></i></span>
+                                            <span class="txt"> Domů </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="{link Project:projects}">
+                                            <span class="icon"><i class="icon20  i-tag"></i></span>
+                                            <span class="txt"> Správa projektů </span>
+                                        </a>
+                                    </li>
+                                    
+                                {elseif ($user_role==3)}
+                                    <li>
+                                        <a href="{link Homepage:default}">
+                                            <span class="icon"><i class="icon20   i-pencil-5"></i></span>
+                                            <span class="txt"> Domů </span>
+                                        </a>
+                                    </li>
+                                {/if}
+                            {/ifset}
+                                <li>
+                                    <a href="{link Request:list}">
+                                        <span class="icon"><i class="icon20  i-tag"></i></span>
+                                        <span class="txt"> Správa poptávek </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{link Useredit:usersList}">
+                                        <span class="icon"><i class="icon20 i-user"></i></span>
+                                        <span class="txt"> Správa uživatelů </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{link Team:teams}">
+                                        <span class="icon"><i class="icon20  i-office"></i></span>
+                                        <span class="txt"> Správa týmů </span>
+                                    </a>
+                                </li>
                         </ul>
                     </nav> <!-- End #mainnav -->
                 </div> <!-- End .sidebar-wrapper  -->

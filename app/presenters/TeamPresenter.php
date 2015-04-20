@@ -22,6 +22,12 @@ class TeamPresenter extends BasePresenter {
     private $pozice;
     private $tym;
     
+    
+    protected function startup()
+    {
+        parent::startup();         
+    }
+    
     public function __construct(Nette\Database\Context $database)
 	{
 		$this->database = $database;

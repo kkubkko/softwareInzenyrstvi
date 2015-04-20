@@ -21,6 +21,11 @@ class ProjectPresenter extends BasePresenter {
     
     private $edit;
     
+    
+    protected function startup()
+    {
+        parent::startup();         
+    }
 
     public function __construct(Nette\Database\Context $database)
 	{

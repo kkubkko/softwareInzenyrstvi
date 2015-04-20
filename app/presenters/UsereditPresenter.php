@@ -20,6 +20,12 @@ class UsereditPresenter extends BasePresenter
 	private $isNewEmployee = FALSE;
 	private $edit = FALSE;
 	private $userId = 0;
+        
+        
+    protected function startup()
+    {
+        parent::startup();         
+    }
     
     public function __construct(Nette\Database\Context $database)
 	{

@@ -25,6 +25,12 @@ class VersionPresenter extends BasePresenter
     private $aktualni;
     //private $poz;
     
+    
+    protected function startup()
+    {
+        parent::startup();         
+    }
+    
     protected function createComponentVersionForm()
     {
         $form = new Nette\Application\UI\Form;
