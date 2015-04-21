@@ -74,15 +74,17 @@ class VersionPresenter extends BasePresenter
         $this->redirect('Version:version', $ver->dokument_id);
     }
     
-    protected function createComponentAddDemandForm()
+    protected function createComponentEditRequestForm()
     {
         $form = new Nette\Application\UI\Form;
         
-        $demand = $this->requests->listOfServices();
+        $demand = $this->pozadavky->listOfServices();
         
         foreach ($demand as $dem){
             $sel_dem[$dem->ID] = $dem->nazev;
         }
+        
+        $form->addHidden('id_doc', 0);
         
         $form->addCheckboxList('services', 'Vyber sluzeb', $sel_dem)
                 ;//->setRequired('Musite vybrat aspon jednu sluzbu!');
@@ -90,14 +92,16 @@ class VersionPresenter extends BasePresenter
         $form->addText('spec','Upresneni poptavky')
                 ->addRule(Form::MAX_LENGTH, 'Text je příliš dlouhy', 255)
                 ->setRequired('Uvedte prosim upresnujici popis!');
-        
+        $form->addText('uprava', 'Popis uprav')
+                ->addRule(Form::MAX_LENGTH, 'Text je příliš dlouhy', 255)
+                ->setRequired('Uvedte prosim popis uprav!');
         $form->addSubmit('send', 'Pridat');
         
-        $form->onSuccess[] = array($this, 'addDemandFormSucceded');
+        $form->onSuccess[] = array($this, 'editRequestFormSucceded');
         return $form;        
     }
     
-    public function addDemandFormSucceded($form)
+    public function editRequestFormSucceded($form)
     {
         $hodnoty = $form->values;
         
@@ -105,17 +109,20 @@ class VersionPresenter extends BasePresenter
             $this->database->beginTransaction();
             
             $special = array('text' => $hodnoty->spec);
-            $db_spec = $this->requests->addSpecial($special);
-            $db_dem = $this->requests->addDemand($db_spec->ID, $this->user->id);
+            $db_spec = $this->pozadavky->addSpecial($special);
+            // pridat verzi, pak pozadavky a k nim sluzby a spec...
+            $db_dem = $this->pozadavky->addDemand($db_spec->ID, $this->user->id);
             foreach ($hodnoty->services as $service){
                 $this->requests->addDemandService($service, $db_dem->ID);
-            }            
+            }
+            
+                     
             $this->database->commit();
         } catch (Nette\Neon\Exception $ex) {
             $this->database->rollBack();
             $form->addError($ex->getMessage());
         } 
-        $this->redirect('Request:userDemand');
+        $this->redirect('Version:version', $hodnoty->id_doc);
     }
     
     public function actionVersion($id_dokument, $verze = NULL)
@@ -148,6 +155,42 @@ class VersionPresenter extends BasePresenter
                 $this['promptForm']->setDefaults(array(
                     'id_verze' => $id_verze,
                 ));
+            } else {
+                $this->setView('notFound');
+            }
+        } else {
+            $this->setView('notAllowed');
+        }
+    }
+    
+    public function actionEditRequest($id_verze)
+    {
+        if ($this->user->isInRole('zákazník') || $this->user->isInRole('manažer') || $this->user->isInRole('admin')){
+            $verze = $this->verze->vratVerziProID($id_verze);
+            if ($verze){
+                $poz = $this->pozadavky->vratPozadavkyProVerzi($id_verze);
+                if ($poz) {
+                    $popis = $poz->specialni->text;
+                    $sluzby = $this->pozadavky->vratSeznamSluzebProPozadavky($poz->ID);
+                    foreach ($sluzby as $sluzba) {
+                        $sel_sluzba[] = $sluzba->sluzba_id;
+                    }
+                    if (isset($sel_sluzba)) {
+                        $data = array(
+                            'id_doc' => $verze->dokument_id,
+                            'spec' => $popis,
+                            'services' => $sel_sluzba,
+                        );
+                    } else {
+                        $data = array(
+                            'id_doc' => $verze->dokument_id,
+                            'spec' => $popis,
+                        );
+                    }
+                    $this['editRequestForm']->setDefaults($data);
+                } else {
+                    $this->setView('notFound');
+                }
             } else {
                 $this->setView('notFound');
             }

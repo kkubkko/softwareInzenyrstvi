@@ -32,7 +32,7 @@
     {if !isset($pozadavky)}
         <a href="{link Request:addDemandProject, $projekt->ID}">Pridat poptavku</a>
     {else}
-        <a href="{link upravit!}">Upravit pozadavky</a>
+        <a href="{link Version:editRequest, $verze->ID}">Upravit pozadavky</a>
     {/if} 
 {/if}
     
