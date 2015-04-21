@@ -20,7 +20,9 @@ class VersionPresenter extends BasePresenter
     public $verze;
     /** @var \App\Model\Requests @inject */
     public $pozadavky;
-    
+    /** @var Nette\Database\Context */
+    private $database;
+
     private $id_dok;
     private $ver;
     private $aktualni;
@@ -30,6 +32,11 @@ class VersionPresenter extends BasePresenter
     protected function startup()
     {
         parent::startup();         
+    }
+    
+    public function __construct(Nette\Database\Context $database)
+    {
+            $this->database = $database;
     }
     
     protected function createComponentVersionForm()
@@ -95,7 +102,7 @@ class VersionPresenter extends BasePresenter
         $form->addText('uprava', 'Popis uprav')
                 ->addRule(Form::MAX_LENGTH, 'Text je příliš dlouhy', 255)
                 ->setRequired('Uvedte prosim popis uprav!');
-        $form->addSubmit('send', 'Pridat');
+        $form->addSubmit('send', 'Ulozit novou verzi');
         
         $form->onSuccess[] = array($this, 'editRequestFormSucceded');
         return $form;        
@@ -109,14 +116,14 @@ class VersionPresenter extends BasePresenter
             $this->database->beginTransaction();
             
             $special = array('text' => $hodnoty->spec);
-            $db_spec = $this->pozadavky->addSpecial($special);
-            // pridat verzi, pak pozadavky a k nim sluzby a spec...
-            $db_dem = $this->pozadavky->addDemand($db_spec->ID, $this->user->id);
+            $db_spec = $this->pozadavky->addSpecial($special);          
+            $db_ver = $this->verze->vytvoritDalsiVerzi($hodnoty->id_doc);
+            $this->verze->pridejUpravu($hodnoty->uprava, $db_ver->ID);
+            $db_doc = $this->dokumenty->novaVerzeDokumentu($hodnoty->id_doc);
+            $db_poz = $this->pozadavky->addRequest($db_ver->ID, $db_spec->ID);
             foreach ($hodnoty->services as $service){
-                $this->requests->addDemandService($service, $db_dem->ID);
-            }
-            
-                     
+                $this->pozadavky->addRequestService($db_poz->ID, $service);
+            }                   
             $this->database->commit();
         } catch (Nette\Neon\Exception $ex) {
             $this->database->rollBack();

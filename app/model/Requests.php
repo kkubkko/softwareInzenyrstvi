@@ -80,6 +80,22 @@ class Requests extends Nette\Object{
             'datum' => date('Y-m-d'),
         ));
     }
+    
+    public function addRequest($id_version, $id_special)
+    {
+        return $this->database->table('Pozadavky')->insert(array(
+            'verze_id' => $id_version,
+            'specialni_id' => $id_special,
+        ));        
+    }
+    
+    public function addRequestService($id_request, $id_service)
+    {
+        return $this->database->table('Sluzba_pozadavky')->insert(array(
+            'sluzba_id' => $id_service,
+            'pozadavky_id' => $id_request,
+        ));
+    }
 	
     public function listOfActiveDemands() 
     {		
