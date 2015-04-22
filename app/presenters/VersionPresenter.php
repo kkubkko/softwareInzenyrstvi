@@ -117,7 +117,7 @@ class VersionPresenter extends BasePresenter
             
             $special = array('text' => $hodnoty->spec);
             $db_spec = $this->pozadavky->addSpecial($special);          
-            $db_ver = $this->verze->vytvoritDalsiVerzi($hodnoty->id_doc);
+            $db_ver = $this->verze->vytvoritDalsiVerzi($hodnoty->id_doc, $this->user->getId());
             $this->verze->pridejUpravu($hodnoty->uprava, $db_ver->ID);
             $db_doc = $this->dokumenty->novaVerzeDokumentu($hodnoty->id_doc);
             $db_poz = $this->pozadavky->addRequest($db_ver->ID, $db_spec->ID);

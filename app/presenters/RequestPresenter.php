@@ -163,7 +163,7 @@ class RequestPresenter extends BasePresenter
             }
             $proj = $this->projects->vratProjekt($id_project);
             //$doc = $this->documents->vratDokument($proj->dokument_id);
-            $verze = $this->versions->vytvoritDalsiVerzi($proj->dokument_id);
+            $verze = $this->versions->vytvoritDalsiVerzi($proj->dokument_id, $this->user->getId());
             $this->documents->novaVerzeDokumentu($proj->dokument_id);
             $this->requests->priradPoptavkuDoPozadavku($id_demand, $verze->ID);
             $this->projects->priraditPoptavkuProjektu($id_project, $id_demand);

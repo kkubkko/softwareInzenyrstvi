@@ -114,12 +114,12 @@ class Projects extends Nette\Object {
     }
  //------------------------------------------------------------------------------
         
-    public function zahajitProjekt($id_projekt)
+    public function zahajitProjekt($id_projekt, $zahajil)
     {
         $proj = $this->vratProjekt($id_projekt);
         try {
             $this->database->beginTransaction();
-            $pom = $this->verze->vytvoritPrvniVerzi($proj->dokument_id);
+            $pom = $this->verze->vytvoritPrvniVerzi($proj->dokument_id, $zahajil);
             $this->verze->pridejUpravu('Zahajen projekt', $pom->ID);
             $this->dokumenty->novaVerzeDokumentu($proj->dokument_id);
             $this->database->table('Projekty')->where('ID = ?', $id_projekt)->update(array(
