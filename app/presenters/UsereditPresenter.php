@@ -218,7 +218,17 @@ class UsereditPresenter extends BasePresenter
 				$this->flashMessage('Uživatel byl vytvořen');
 			}
 			
-			$this->redirect('Useredit:usersList');
+			if ($this->edit == FALSE) {
+				$this->redirect('Sign:in');
+			} else {
+				
+				if ($this->user->isInRole('zákazník')) {
+					$this->redirect('Homepage:');
+				} else {
+					$this->redirect('Useredit:usersList');
+				}
+				
+			}
 			
             //$this->redirect('Admin:default');
 
@@ -278,7 +288,7 @@ class UsereditPresenter extends BasePresenter
 	
 	public function actionEditUser($id_user)
     {
-        if ($this->user->isInRole('admin') || $this->user->isInRole('manažer')) {
+        if ($this->user->isInRole('admin') || $this->user->isInRole('manažer') || $this->user->getIdentity()->getId() == $id_user) {
             $this->edit = true;
 			$this->userId = $id_user;
 			

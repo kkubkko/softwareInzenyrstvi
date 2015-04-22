@@ -12,6 +12,9 @@ use Nette,
  */
 abstract class BasePresenter extends Nette\Application\UI\Presenter
 {
+	
+	/** @var \App\Model\Users @inject */
+    public $users;
     
     protected $user_role;
     protected $user_name;
@@ -31,4 +34,23 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
             //$this->redirect('Sign:default');  
         }
     }
+	
+	public function beforeRender() {
+		parent::beforeRender();
+		
+		if ($this->user->isLoggedIn()) {
+			$userId = $this->getUser()->getIdentity()->getId();
+			$this->template->userId = $userId;
+			$this->template->userName = $this->users->vratUser($userId)->login;
+		} else {
+			$this->template->userId = '0';
+			$this->template->userName = 'Host';
+		}
+	
+	}
+	
+	public function actionAfterOut () {
+		$this->redirect('Homepage:');
+	}
+	
 }
