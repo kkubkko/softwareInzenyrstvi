@@ -37,6 +37,11 @@ class UsereditPresenter extends BasePresenter
 	}
 
 	public function renderUsersList(){
+		
+		if ($this->user->isInRole('zákazník') || !$this->user->isLoggedIn()) {
+            $this->setView('notAllowed');
+        }
+		
         $this->template->employees = $this->users->listOfEmployes();
 		$this->template->customers = $this->users->listOfCustomers();
     }
@@ -262,6 +267,10 @@ class UsereditPresenter extends BasePresenter
     }
 
 	public function actionNewEmployee() {
+		
+		if (!$this->user->isInRole('admin') && !$this->user->isInRole('manažer')) {
+            $this->setView('notAllowed');
+        }
 		
 		$this->isNewEmployee = TRUE;
 		
