@@ -20,6 +20,8 @@ class VersionPresenter extends BasePresenter
     public $verze;
     /** @var \App\Model\Requests @inject */
     public $pozadavky;
+    /** @var \App\Model\Projects @inject */
+    public $projekty;
     /** @var Nette\Database\Context */
     private $database;
 
@@ -132,6 +134,35 @@ class VersionPresenter extends BasePresenter
         $this->redirect('Version:version', $hodnoty->id_doc);
     }
     
+    public function handleFinalize($id_verze)
+    {
+        if ($this->user->isInRole('zákazník') || $this->user->isInRole('manažer') || $this->user->isInRole('admin')){
+            $verze = $this->verze->vratVerziProID($id_verze);
+            if ($verze){
+                try {
+                    $this->database->beginTransaction();
+                    if ($this->user->isInRole('zákazník')){
+                        $stav = $this->dokumenty->finalizeZakaznik($verze->dokument_id);
+                    } else {
+                        $stav = $this->dokumenty->finalizeZamestnanec($verze->dokument_id);
+                    }
+                    if ($stav){
+                        $proj = $this->dokumenty->vratProjektDokumentu($verze->dokument_id);
+                        $this->projekty->novaEtapaProjektu($proj->ID);
+                    }
+                    $this->database->commit();
+                } catch (Exception $ex) {
+                    $this->database->rollBack();
+                }                
+            } else {
+                $this->setView('notFound');
+            }
+        } else {
+            $this->setView('notAllowed');
+        }
+    }
+
+
     public function actionVersion($id_dokument, $verze = NULL)
     {
         $pom = $this->dokumenty->vratDokument($id_dokument);
@@ -208,12 +239,28 @@ class VersionPresenter extends BasePresenter
     
     public function renderVersion($id_dokument)
     {
-        if ($this->ver == $this->aktualni){
-            $this->template->aktualni = true;
+        $proj = $this->dokumenty->vratProjektDokumentu($id_dokument);
+        if ($this->ver == $this->aktualni && !$this->dokumenty->kompletniFinalizace($id_dokument, 'tvorba požadavků')){
+            //$this->template->aktualni = true;
+            //$this->flashMessage('a');
+            if ($this->user->isInRole('zákazník')){
+                //$this->flashMessage('b');
+                if ($this->dokumenty->jeFinalizaceOsoba($id_dokument, $proj->etapa, 'zakaznik')){
+                    $this->template->aktualni = false;
+                } else {
+                    $this->template->aktualni = true;
+                }
+            } else {
+                if ($this->dokumenty->jeFinalizaceOsoba($id_dokument, $proj->etapa, 'manazer')){
+                    $this->template->aktualni = false;
+                } else {
+                    $this->template->aktualni = true;
+                }
+            }
         } else {
             $this->template->aktualni = false; 
         }
-        $this->template->projekt = $this->dokumenty->vratProjektDokumentu($id_dokument);
+        $this->template->projekt = $proj;
         $this->template->pripominky = $this->verze->seznamPripominekVerzeDoc($id_dokument, $this->ver);
         $this->template->upravy = $this->verze->seznamUpravVerzeDoc($id_dokument, $this->ver);
         $prac_verze = $this->verze->nactiVerzi($id_dokument, $this->ver);

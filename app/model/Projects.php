@@ -124,11 +124,26 @@ class Projects extends Nette\Object {
             $this->dokumenty->novaVerzeDokumentu($proj->dokument_id);
             $this->database->table('Projekty')->where('ID = ?', $id_projekt)->update(array(
                 'etapa' => 'tvorba požadavků',
-            ));            
+            ));
+            $this->dokumenty->vytvoritInfoFinalizace($proj->dokument_id, 'tvorba požadavků');
             $this->database->commit();
         } catch (Exception $ex) {
             $this->database->rollBack();
         }        
+    }
+    
+    public function novaEtapaProjektu($id_projekt)
+    {
+        try {
+            $proj = $this->vratProjekt($id_projekt);
+            $this->database->table('Projekty')->where('ID = ?', $id_projekt)->update(array(
+                'etapa' => 'architektonický návrh',
+            ));   
+            $this->dokumenty->vytvoritInfoFinalizace($proj->dokument_id, 'architektonický návrh');
+            //$this->database->commit();
+        } catch (Exception $ex){
+            //$this->database->rollBack();
+        }
     }
 
 

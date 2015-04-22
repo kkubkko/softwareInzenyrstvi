@@ -74,6 +74,7 @@ class Versions extends Nette\Object
             'datum_vytvoreni' => date('Y-m-d'),
             'upravil_id' => $upravil, 
         ));
+        $this->dokumenty->zrusFinalizaci($id_dokumentu);
         return $pom;
     }
     

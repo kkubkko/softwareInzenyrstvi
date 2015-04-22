@@ -22,7 +22,7 @@
     <tbody>
         {foreach $sluzby as $sluzba}
             <tr>
-                <td>{$sluzba->sluzba->ID}</td>
+                <td>{$sluzba->sluzba->nazev}</td>
                 <td>{$sluzba->sluzba->popis}</td>
             </tr>
         {/foreach}
@@ -32,12 +32,14 @@
     {if !isset($pozadavky)}
         <a href="{link Request:addDemandProject, $projekt->ID}">Pridat poptavku</a>
     {else}
-        <a href="{link Version:editRequest, $verze->ID}">Upravit pozadavky</a>
+        <a href="{link Version:editRequest, $verze->ID}">Upravit pozadavky</a><br />
+        <a href="{link finalize!, $verze->ID}">Uzavrit</a>
     {/if} 
 {/if}
     
 <h2>Upravy</h2>
 <p>
+<b>Upravil: </b>{$verze->upravil->jmeno}<br />    
 {foreach $upravy as $uprava}
     <b>Text: </b>{$uprava->text}<br />
 {/foreach}

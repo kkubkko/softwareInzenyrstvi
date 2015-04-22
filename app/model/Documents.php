@@ -82,6 +82,81 @@ class Documents extends Nette\Object {
     {
         $pom = $this->database->table('Projekty')->where('dokument_id = ?', $id_doc)->fetch();
         return $pom;
-    }    
+    } 
+    
+    public function vytvoritInfoFinalizace($id_dokument, $etapa)
+    {
+        $pom = $this->database->table('Finalizace')->insert(array(
+            'dokument_id' => $id_dokument,
+            'etapa' => $etapa,
+            'zakaznik' => false,
+            'manazer' => false,
+        ));
+        return $pom;
+    }
+    
+    public function vratFinalizaciDokumentu($id_dokument, $etapa)
+    {
+        return $this->database->table('Finalizace')->where('dokument_id = ? AND etapa = ?', $id_dokument, $etapa)->fetch();
+    }
+    
+    public function kompletniFinalizace($id_dokument, $etapa)
+    {
+        $pom = $this->vratFinalizaciDokumentu($id_dokument, $etapa);
+        if ($pom->zakaznik && $pom->manazer){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function finalizeZakaznik($id_dokument)
+    {
+        //$doc = $this->vratDokument($id_dokument);
+        $proj = $this->vratProjektDokumentu($id_dokument);
+        //$fin = $this->vratFinalizaciDokumentu($id_dokument, $proj->etapa);
+        $this->database->table('Finalizace')->where('dokument_id = ? AND etapa = ?', $id_dokument, $proj->etapa)->update(array(
+            'zakaznik' => true,
+        ));
+        if ($this->kompletniFinalizace($id_dokument, $proj->etapa)){
+            return true;
+        } else {
+            return false;
+        }        
+    }
+    
+    public function finalizeZamestnanec($id_dokument)
+    {
+        //$doc = $this->vratDokument($id_dokument);
+        $proj = $this->vratProjektDokumentu($id_dokument);
+        //$fin = $this->vratFinalizaciDokumentu($id_dokument, $proj->etapa);
+        $this->database->table('Finalizace')->where('dokument_id = ? AND etapa = ?', $id_dokument, $proj->etapa)->update(array(
+            'manazer' => true,
+        ));
+        if ($this->kompletniFinalizace($id_dokument, $proj->etapa)){
+            return true;
+        } else {
+            return false;
+        }        
+    }
+    
+    public function zrusFinalizaci($id_dokument)
+    {
+        $proj = $this->vratProjektDokumentu($id_dokument);
+        $this->database->table('Finalizace')->where('dokument_id = ? AND etapa = ?', $id_dokument, $proj->etapa)->update(array(
+            'zakaznik' => false,
+            'manazer' => false,
+        ));
+    }
+    
+    public function jeFinalizaceOsoba($id_dokument, $etapa, $osoba)
+    {
+        $fin = $this->vratFinalizaciDokumentu($id_dokument, $etapa);
+        if ($fin->$osoba) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
 
