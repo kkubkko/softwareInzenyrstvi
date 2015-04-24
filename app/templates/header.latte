@@ -7,7 +7,11 @@
                     <li class="divider-vertical"></li>
                     <li class="dropdown user">
                          <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
-                            <b>User</b><!-- Doplnit jmeno přihlášeného usera  --> 
+                            {if $user->isLoggedIn()}
+                            <b>{$user->getIdentity()->jmeno}</b><!-- Doplnit jmeno přihlášeného usera  --> 
+                            {else}
+                                <b>Log-In</b><!-- Doplnit jmeno přihlášeného usera  --> 
+                            {/if}
                             <span class="more"><i class="icon16 i-arrow-down-2"></i></span>
                         </a>
                         <ul class="dropdown-menu">

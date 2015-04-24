@@ -9,8 +9,8 @@
                 <div class="sidebar-wrapper">
                     <nav id="mainnav">
                         <ul class="nav nav-list"> 
-                            {ifset $user_role}
-                                {if ($user_role==2)}
+                            {*ifset $user_role/*}
+                                {*if ($user_role==2)/*}
                                     <li>
                                         <a href="{link Homepage:default}">
                                             <span class="icon"><i class="icon20   i-pencil-5"></i></span>
@@ -24,15 +24,15 @@
                                         </a>
                                     </li>
                                     
-                                {elseif ($user_role==3)}
+                                {*elseif ($user_role==3)/*}
                                     <li>
                                         <a href="{link Homepage:default}">
                                             <span class="icon"><i class="icon20   i-pencil-5"></i></span>
                                             <span class="txt"> Domů </span>
                                         </a>
                                     </li>
-                                {/if}
-                            {/ifset}
+                                {*/if/*}
+                            {*/ifset/*}
                                 <li>
                                     <a href="{link Request:list}">
                                         <span class="icon"><i class="icon20  i-tag"></i></span>
