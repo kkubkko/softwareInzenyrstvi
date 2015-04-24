@@ -1,66 +1,105 @@
+
 {* Latte template *}
 
 {block content}
 
-<h1 n:block=title>Verze dokumentu</h1>
+{include ../header.latte}
 
-{control versionForm}
 
-<h2>Upresnujici popis pozadavku</h2>
-{if isset($pozadavky)}
-    <p>{$pozadavky->specialni->text}</p>
-{else}
-    <p>nevyplneno</p>
-{/if}        
 
-<h2>Seznam nadstandartnich sluzeb</h2>
-<table>
-    <thead>
-        <td>nazev</td>
-        <td>popis</td>
-    </thead>
-    <tbody>
-        {foreach $sluzby as $sluzba}
-            <tr>
-                <td>{$sluzba->sluzba->nazev}</td>
-                <td>{$sluzba->sluzba->popis}</td>
-            </tr>
-        {/foreach}
-    </tbody>    
-</table>
-{if $aktualni}
-    {if !isset($pozadavky)}
-        <a href="{link Request:addDemandProject, $projekt->ID}">Pridat poptavku</a>
-    {else}
-        <a href="{link Version:editRequest, $verze->ID}">Upravit pozadavky</a><br />
-        <a href="{link finalize!, $verze->ID}">Uzavrit</a>
-    {/if} 
-{/if}
-    
-<h2>Upravy</h2>
-<p>
-<b>Upravil: </b>{$verze->upravil->jmeno}<br />    
-{foreach $upravy as $uprava}
-    <b>Text: </b>{$uprava->text}<br />
-{/foreach}
-</p>
+<div class="main">
+    {include ../menu.latte}
+    <section id="content">
+        <div class="wrapper">
+            <div class="container-fluid">
+                <div id="heading" class="page-header">
+                    <h1 n:block=title><i class="icon20 i-users"></i> Dokument </h1>
+                </div>
 
-    
-<h2>Pripominky</h2>
-<table>
-    <thead>
-        <td>ID</td>
-        <td>Text</td>
-    </thead>
-    <tbody>
-        {foreach $pripominky as $pripominka}
-            <tr>
-                <td>{$pripominka->ID}</td>
-                <td>{$pripominka->text}</td>
-            </tr>
-        {/foreach}
-    </tbody>    
-</table>
-{if $aktualni}    
-    <a href="{link Version:addPrompt, $verze->ID}">Pridat pripominku</a>
-{/if}
+                        
+                          <div class="row-fluid">
+                            <div class="span12">
+                                <div class="widget">
+                                    <div class="widget-title">
+                                        <div class="icon"><i class="icon20 i-vcard"></i></div> 
+                                        <h4>Verze dokumentu</h4>
+                                        <a href="#" class="minimize"></a>
+                                    </div><!-- End .widget-title -->
+                                
+                                    <div class="widget-content">
+
+                                        {control versionForm}
+
+                                            <h2>Upresnujici popis pozadavku</h2>
+                                            {if isset($pozadavky)}
+                                                <p>{$pozadavky->specialni->text}</p>
+                                            {else}
+                                                <p>nevyplneno</p>
+                                            {/if}        
+
+                                            <h2>Seznam nadstandartnich sluzeb</h2>
+                                            <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered table-hover dataTable" id="dataTable">
+                                                <thead>
+                                                    <td>nazev</td>
+                                                    <td>popis</td>
+                                                </thead>
+                                                <tbody>
+                                                    {foreach $sluzby as $sluzba}
+                                                        <tr>
+                                                            <td>{$sluzba->sluzba->nazev}</td>
+                                                            <td>{$sluzba->sluzba->popis}</td>
+                                                        </tr>
+                                                    {/foreach}
+                                                </tbody>    
+                                            </table>
+                                            {if $aktualni}
+                                                {if !isset($pozadavky)}
+                                                    <a href="{link Request:addDemandProject, $projekt->ID}">Pridat poptavku</a>
+                                                {else}
+                                                    <a href="{link Version:editRequest, $verze->ID}">Upravit pozadavky</a><br />
+                                                    <a href="{link finalize!, $verze->ID}">Uzavrit</a>
+                                                {/if} 
+                                            {/if}
+
+                                            <h2>Upravy</h2>
+                                            <p>
+                                            <b>Upravil: </b>{$verze->upravil->jmeno}<br />    
+                                            {foreach $upravy as $uprava}
+                                                <b>Text: </b>{$uprava->text}<br />
+                                            {/foreach}
+                                            </p>
+
+
+                                            <h2>Pripominky</h2>
+                                            <table>
+                                                <thead>
+                                                    <td>ID</td>
+                                                    <td>Text</td>
+                                                </thead>
+                                                <tbody>
+                                                    {foreach $pripominky as $pripominka}
+                                                        <tr>
+                                                            <td>{$pripominka->ID}</td>
+                                                            <td>{$pripominka->text}</td>
+                                                        </tr>
+                                                    {/foreach}
+                                                </tbody>    
+                                            </table>
+                                            {if $aktualni}    
+                                                <a href="{link Version:addPrompt, $verze->ID}">Pridat pripominku</a>
+                                            {/if}
+
+                                        
+                                    </div><!-- End .widget-content -->
+                                </div><!-- End .widget -->
+                            </div><!-- End .span6  -->  
+                            
+                       </div>
+                                        
+                                        
+					
+                </div><!-- End .row-fluid  -->
+
+            </div> <!-- End .container-fluid  -->
+        </div> <!-- End .wrapper  -->
+{/block}      

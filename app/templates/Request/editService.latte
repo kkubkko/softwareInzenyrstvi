@@ -2,9 +2,43 @@
 
 {block content}
 
-<h1 n:block=title>{$nadpis}</h1>
-{control addRequestForm}
+{include ../header.latte}
 
 
-<br><br>
-<a href="{link Request:services}">Zpet</a>
+
+<div class="main">
+    {include ../menu.latte}
+    <section id="content">
+        <div class="wrapper">
+            <div class="container-fluid">
+                <div id="heading" class="page-header">
+                    <h1 n:block=title><i class="icon20 i-users"></i> Přidat službu </h1>
+                </div>
+
+                        
+                          <div class="row-fluid">
+                            <div class="span12">
+                                <div class="widget">
+                                    <div class="widget-title">
+                                        <div class="icon"><i class="icon20 i-vcard"></i></div> 
+                                        <h4>Poptávka</h4>
+                                        <a href="#" class="minimize"></a>
+                                    </div><!-- End .widget-title -->
+                                
+                                    <div class="widget-content">
+
+                                        {control addRequestForm}
+                                        
+                                    </div><!-- End .widget-content -->
+                                </div><!-- End .widget -->
+                            </div><!-- End .span6  -->  
+                            <a href="{link Request:services}">Zpet</a>
+                       </div>
+                                        
+                                        
+					
+                </div><!-- End .row-fluid  -->
+
+            </div> <!-- End .container-fluid  -->
+        </div> <!-- End .wrapper  -->
+{/block}      

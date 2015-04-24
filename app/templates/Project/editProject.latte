@@ -1,6 +1,10 @@
+{* Latte template *}
+
 {block content}
 
 {include ../header.latte}
+
+
 
 <div class="main">
     {include ../menu.latte}
@@ -8,7 +12,7 @@
         <div class="wrapper">
             <div class="container-fluid">
                 <div id="heading" class="page-header">
-                    <h1><i class="icon20 i-users"></i> Editace projektu </h1>
+                    <h1 n:block=title><i class="icon20 i-users"></i> Projekt </h1>
                 </div>
 
                         
@@ -17,12 +21,14 @@
                                 <div class="widget">
                                     <div class="widget-title">
                                         <div class="icon"><i class="icon20 i-vcard"></i></div> 
-                                        <h4>Projekty</h4>
+                                        <h4>Editace projektu</h4>
                                         <a href="#" class="minimize"></a>
                                     </div><!-- End .widget-title -->
                                 
                                     <div class="widget-content">
+
                                         {control editProjectForm}
+                                        
                                     </div><!-- End .widget-content -->
                                 </div><!-- End .widget -->
                             </div><!-- End .span6  -->  
@@ -36,4 +42,3 @@
             </div> <!-- End .container-fluid  -->
         </div> <!-- End .wrapper  -->
 {/block}      
-

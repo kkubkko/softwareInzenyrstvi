@@ -1,7 +1,42 @@
-{* Latte template *}
-
 {block content}
 
-<h1 n:block=title>{$nadpis}</h1>
+{include ../header.latte}
 
-{control projectForm}
+
+
+<div class="main">
+    {include ../menu.latte}
+    <section id="content">
+        <div class="wrapper">
+            <div class="container-fluid">
+                <div id="heading" class="page-header">
+                    <h1 n:block=title><i class="icon20 i-users"></i> Přidat projekt </h1>
+                </div>
+
+                        
+                          <div class="row-fluid">
+                            <div class="span12">
+                                <div class="widget">
+                                    <div class="widget-title">
+                                        <div class="icon"><i class="icon20 i-vcard"></i></div> 
+                                        <h4>Projekt</h4>
+                                        <a href="#" class="minimize"></a>
+                                    </div><!-- End .widget-title -->
+                                
+                                    <div class="widget-content">
+
+                                        {control projectForm}
+                                        
+                                    </div><!-- End .widget-content -->
+                                </div><!-- End .widget -->
+                            </div><!-- End .span6  -->  
+                            
+                       </div>
+                                        
+                                        
+					
+                </div><!-- End .row-fluid  -->
+
+            </div> <!-- End .container-fluid  -->
+        </div> <!-- End .wrapper  -->
+{/block}      

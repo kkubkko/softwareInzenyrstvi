@@ -1,40 +1,75 @@
-{* Latte template *}
-
 {block content}
 
-<h1 n:block=title>Seznam sluzeb</h1>
+{include ../header.latte}
 
-{if !$user->isLoggedIn() || (!$user->isInRole('admin') && $user->isInRole('manažer'))}
-    <p>
-        Zde je uváděn seznam rozšiřujících služeb. V rámci jedné zakázky se předpokládá, že firma 
-        provede kompletní architektonický návrh, na základě něho projekt a násldně výstavbu přízemní 
-        nepodsklepené budovy a půdními prostorami.
-    </p>
-{/if}
+<div class="main">
+    {include ../menu.latte}
+    <section id="content">
+        <div class="wrapper">
+            <div class="container-fluid">
+                <div id="heading" class="page-header">
+                    <h1 n:block=title><i class="icon20 i-users"></i> Operace se službami</h1>
+                </div>
 
-<table>
-    <thead>
-        <th>Nazev</th>
-        <th>Popis</th>
-        {if $user->isInRole('admin') || $user->isInRole('manažer')}
-            <td>-</td>
-            <td>-</td>
-        {/if}
-    </thead>
-    <tbody>
-        {foreach $sluzby as $sluzba}
-            <tr>
-                <td>{$sluzba->nazev}</td>
-                <td>{$sluzba->popis}</td>
-                {if $user->isInRole('admin') || $user->isInRole('manažer')}
-                    <td><a href="{link Request:editService, $sluzba->ID}">edit</a></td>
-                    <td><a href="{link delService!, $sluzba->ID}">smazat</a></td>
-                {/if}
-            </tr>
-        {/foreach}   
-    </tbody>
-</table>
-{if $user->isInRole('admin') || $user->isInRole('manažer')}
-    <p><a href="{link Request:editService}">pridat</a></p>
-{/if}   
+                        
+                          <div class="row-fluid">
+                            <div class="span12">
+                                <div class="widget">
+                                    <div class="widget-title">
+                                        <div class="icon"><i class="icon20 i-vcard"></i></div> 
+                                        <h4>Seznam služeb</h4>
+                                        <a href="#" class="minimize"></a>
+                                    </div><!-- End .widget-title -->
+                                
+                                    <div class="widget-content">
+                                    {if !$user->isLoggedIn() || (!$user->isInRole('admin') && $user->isInRole('manažer'))}
+                                        <p>
+                                            Zde je uváděn seznam rozšiřujících služeb. V rámci jedné zakázky se předpokládá, že firma 
+                                            provede kompletní architektonický návrh, na základě něho projekt a násldně výstavbu přízemní 
+                                            nepodsklepené budovy a půdními prostorami.
+                                        </p>
+                                    {/if}
+                                    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered table-hover dataTable" id="dataTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Nazev</th>
+                                                <th>Popis</th>
+                                                {if $user->isInRole('admin') || $user->isInRole('manažer')}
+                                                    <td>-</td>
+                                                    <td>-</td>
+                                                {/if}
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {foreach $sluzby as $sluzba}
+                                         <tr>
+                                            <td>{$sluzba->nazev}</td>
+                                            <td>{$sluzba->popis}</td>
+                                            {if $user->isInRole('admin') || $user->isInRole('manažer')}
+                                                <td><a href="{link Request:editService, $sluzba->ID}">edit</a></td>
+                                                <td> <span class="status tip" title="Deprecated">smazat</span></td>
+                                            {/if}
+                                        </tr>
+          <!-- /Foreach na USERY -->    {/foreach}
+                                        </tbody>
+                                    </table>
+                                        <div style="text-align: center;">
+                                            {if $user->isInRole('admin') || $user->isInRole('manažer')}
+                                                <a href="{link Request:editService}"><h3>Přidat novou službu</h3></a>
+                                            {/if}     
+                                        </div>
+                                    </div><!-- End .widget-content -->
+                                </div><!-- End .widget -->
+                            </div><!-- End .span6  -->  
+                            
+                       </div>
+                                        
+                                        
+					
+                </div><!-- End .row-fluid  -->
+
+            </div> <!-- End .container-fluid  -->
+        </div> <!-- End .wrapper  -->
+{/block}      
+
 

@@ -9,30 +9,19 @@
                 <div class="sidebar-wrapper">
                     <nav id="mainnav">
                         <ul class="nav nav-list"> 
-                            {*ifset $user_role/*}
-                                {*if ($user_role==2)/*}
-                                    <li>
-                                        <a href="{link Homepage:default}">
-                                            <span class="icon"><i class="icon20   i-pencil-5"></i></span>
-                                            <span class="txt"> Domů </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="{link Project:projects}">
-                                            <span class="icon"><i class="icon20  i-tag"></i></span>
-                                            <span class="txt"> Správa projektů </span>
-                                        </a>
-                                    </li>
-                                    
-                                {*elseif ($user_role==3)/*}
-                                    <li>
-                                        <a href="{link Homepage:default}">
-                                            <span class="icon"><i class="icon20   i-pencil-5"></i></span>
-                                            <span class="txt"> Domů </span>
-                                        </a>
-                                    </li>
-                                {*/if/*}
-                            {*/ifset/*}
+                            {ifset $user_role}
+                                <li>
+                                    <a href="{link Homepage:default}">
+                                        <span class="icon"><i class="icon20   i-pencil-5"></i></span>
+                                        <span class="txt"> Domů </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{link Project:projects}">
+                                        <span class="icon"><i class="icon20  i-tag"></i></span>
+                                        <span class="txt"> Správa projektů </span>
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="{link Request:list}">
                                         <span class="icon"><i class="icon20  i-tag"></i></span>
@@ -51,6 +40,26 @@
                                         <span class="txt"> Správa týmů </span>
                                     </a>
                                 </li>
+                                
+                                
+                                {*if ($user_role==2)/*}
+                                {*elseif ($user_role==3)/*}
+
+                                {*/if/*}
+                            {else}
+                                <li>
+                                    <a href="{link Homepage:default}">
+                                        <span class="icon"><i class="icon20   i-pencil-5"></i></span>
+                                        <span class="txt"> Domů </span>
+                                    </a>
+                                </li>
+                                 <li>
+                                    <a href="{link Useredit:default}">
+                                        <span class="icon"><i class="icon20  i-tag"></i></span>
+                                        <span class="txt"> Registrace </span>
+                                    </a>
+                                </li>
+                            {/ifset}
                         </ul>
                     </nav> <!-- End #mainnav -->
                 </div> <!-- End .sidebar-wrapper  -->
