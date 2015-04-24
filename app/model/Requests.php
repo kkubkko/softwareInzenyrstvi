@@ -66,7 +66,9 @@ class Requests extends Nette\Object{
         $data = array ( 'specialni_id' => $special_id,
                 'osoba_id' => $user_id,
                 'datum' => date('Y-m-d'),	
-                'stav' => 'čeká na posouzení');
+                'stav' => 'čeká na posouzení',
+                'dat_zmeny' => date('Y-m-d'),
+            );
         return $this->database->table('Poptavka')->insert($data);
 	}
     
@@ -78,15 +80,31 @@ class Requests extends Nette\Object{
             'datum' => date('Y-m-d'),
         ));
     }
+    
+    public function addRequest($id_version, $id_special)
+    {
+        return $this->database->table('Pozadavky')->insert(array(
+            'verze_id' => $id_version,
+            'specialni_id' => $id_special,
+        ));        
+    }
+    
+    public function addRequestService($id_request, $id_service)
+    {
+        return $this->database->table('Sluzba_pozadavky')->insert(array(
+            'sluzba_id' => $id_service,
+            'pozadavky_id' => $id_request,
+        ));
+    }
 	
     public function listOfActiveDemands() 
     {		
-        return $this->database->table('Poptavka')->where('stav <> ?', 'odmitnuto');		
+        return $this->database->table('Poptavka')->where('stav = ?', 'čeká na posouzení');		
     }
     
     public function listOdDeactiveDemands()
     {
-        return $this->database->table('Poptavka')->where('stav = ?', 'odmitnuto');
+        return $this->database->table('Poptavka')->where('stav <> ?', 'čeká na posouzení');
     }
     
     public function listOfUsersDemands($id_user)
@@ -96,7 +114,7 @@ class Requests extends Nette\Object{
     
     public function listOfUsersActiveDemands($id_user)
     {
-        return $this->database->table('Poptavka')->where('osoba_id = ? AND stav <> ?', $id_user, 'odmitnuto');
+        return $this->database->table('Poptavka')->where('osoba_id = ? AND stav = ?', $id_user, 'čeká na posouzení');
     }
 	
     public function vratDemand($request_id) {
@@ -113,7 +131,7 @@ class Requests extends Nette\Object{
     {
         $this->database->table('Poptavka')->where('ID = ?', $id_demand)->update(array(
             'stav' => 'odmitnuto',
-            'datum' => date('Y-m-d'),
+            'dat_zmeny' => date('Y-m-d'),
         ));
     }
     
@@ -136,6 +154,11 @@ class Requests extends Nette\Object{
         $this->database->table('Upravy')->insert(array(
             'verze_id' => $id_verze,
             'text' => 'Prirazeni poptavky k pozadavkum',
+        ));
+        
+        $this->database->table('Poptavka')->where('ID = ?', $id_poptavky)->update(array(
+            'stav' => 'přijato',
+            'dat_zmeny' => date('Y-m-d'),
         ));
         return $pom;
     }

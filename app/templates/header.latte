@@ -7,16 +7,24 @@
                     <li class="divider-vertical"></li>
                     <li class="dropdown user">
                          <a href="#" class="dropdown-toggle avatar" data-toggle="dropdown">
+<<<<<<< HEAD
                             {if $user->isLoggedIn()}
                             <b>{$user->getIdentity()->jmeno}</b><!-- Doplnit jmeno přihlášeného usera  --> 
                             {else}
                                 <b>Log-In</b><!-- Doplnit jmeno přihlášeného usera  --> 
                             {/if}
+=======
+                            <b>{$userName}</b> 
+>>>>>>> e1c067f0e353b46285f9a2e25056e3e5e073cf54
                             <span class="more"><i class="icon16 i-arrow-down-2"></i></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li> <a href="users_edit.php?id_user=" class=""> <i class="icon16 i-king"></i> Nastavení</a></li> <!-- Doplnit id usera v href  --> 
+							{if $userId == 0}
+							<li> <a href="{link Sign:in}" class=""> <i class="icon16 i-exit"></i> Sign in</a> </li>
+							{else}
+							<li> <a href="{link Useredit:editUser $userId}" class=""> <i class="icon16 i-king"></i> Nastavení</a></li>
                             <li> <a href="{link Sign:out}" class=""> <i class="icon16 i-exit"></i> Logout</a> </li>
+							{/if}
                         </ul>
                     </li>
                     <li class="divider-vertical"></li>

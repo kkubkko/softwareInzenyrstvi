@@ -37,13 +37,33 @@ class UsereditPresenter extends BasePresenter
 	}
 
 	public function renderUsersList(){
+		
+		if ($this->user->isInRole('zákazník') || !$this->user->isLoggedIn()) {
+            $this->setView('notAllowed');
+        }
+		
         $this->template->employees = $this->users->listOfEmployes();
 		$this->template->customers = $this->users->listOfCustomers();
     }
 	
 	public function actionDelete($id) {
-		$this->users->deleteUser($id);
-		$this->redirect('useredit:usersList');
+		$canDelete = TRUE;
+		
+		$tymy = $this->users->vratTymy($id);
+		foreach ($tymy as $tym) {
+			if ($tym->tym->ukoncen == FALSE) {
+				$canDelete = FALSE;
+			}
+		}
+		
+		if ($canDelete == TRUE) {
+			$this->users->deleteUser($id);
+			$this->redirect('useredit:usersList');
+		} else {
+			$this->flashMessage('Uživatel je součástí aktivního týmu.');
+			$this->redirect('useredit:usersList');
+		}
+		
 	}
 	
 	public function emailValidator($item, $arg) {
@@ -96,16 +116,17 @@ class UsereditPresenter extends BasePresenter
 		
 			if ($this->isNewEmployee == TRUE) {
 			$roles = $this->users->rolesForEmployees();
-		} else {
-			$roles = $this->users->rolesForCustomer();
-		}
-
-		foreach ($roles as $role) {
+			
+			foreach ($roles as $role) {
 				$arr_roles[$role->ID] = $role->nazev;
 			}
 			$form->addSelect('role', 'Role:', $arr_roles)
 					->setRequired('Prosím zadejte roli.')
 					->setPrompt('Volba role');
+
+		} else {
+			$roles = $this->users->rolesForCustomer();
+		}
 			
 	} 
 		
@@ -123,6 +144,13 @@ class UsereditPresenter extends BasePresenter
 
 		if ($values["heslo"] != $values["zopakovaneHeslo"]) { // validační podmínka
 			$form->addError('Heslá se neshodují');
+		}
+		
+		$users = $this->users->listOfUsers();
+		foreach ($users as $actual) {
+			if ($actual->login == $values['login']) {
+				$form->addError('Takový login již existuje');
+			}
 		}
 	}
 
@@ -169,7 +197,7 @@ class UsereditPresenter extends BasePresenter
 				$this->users->addContacts($contacts);
 				
 				$date = /*DateTime::getTimestamp();*/ date('Y-m-d');
-				$role= array(	'role_id' => $values['role'],
+				$role= array(	'role_id' => '1',
 							'osoby_id' => $userId,
 							'datum_prirazeni' => $date);
 				$this->users->addRole($role);
@@ -190,7 +218,17 @@ class UsereditPresenter extends BasePresenter
 				$this->flashMessage('Uživatel byl vytvořen');
 			}
 			
-			$this->redirect('Useredit:usersList');
+			if ($this->edit == FALSE) {
+				$this->redirect('Sign:in');
+			} else {
+				
+				if ($this->user->isInRole('zákazník')) {
+					$this->redirect('Homepage:');
+				} else {
+					$this->redirect('Useredit:usersList');
+				}
+				
+			}
 			
             //$this->redirect('Admin:default');
 
@@ -240,13 +278,17 @@ class UsereditPresenter extends BasePresenter
 
 	public function actionNewEmployee() {
 		
+		if (!$this->user->isInRole('admin') && !$this->user->isInRole('manažer')) {
+            $this->setView('notAllowed');
+        }
+		
 		$this->isNewEmployee = TRUE;
 		
 	}
 	
 	public function actionEditUser($id_user)
     {
-        if ($this->user->isInRole('admin') || $this->user->isInRole('manažer')) {
+        if ($this->user->isInRole('admin') || $this->user->isInRole('manažer') || $this->user->getIdentity()->getId() == $id_user) {
             $this->edit = true;
 			$this->userId = $id_user;
 			

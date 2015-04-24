@@ -51,18 +51,19 @@ class Versions extends Nette\Object
         return $this->nactiVerzi($id_dokument, $verze);
     }
     
-    public function vytvoritPrvniVerzi($id_dokumentu)
+    public function vytvoritPrvniVerzi($id_dokumentu, $upravil)
     {            
         $pom = $this->database->table('Verze')->insert(array(
             'dokument_id' => $id_dokumentu,
             'akt_etapa' => 'tvorba požadavků',
             'verze' => 1,
             'datum_vytvoreni' => date('Y-m-d'),
+            'upravil_id' => $upravil, 
         ));
         return $pom;
     }
     
-    public function vytvoritDalsiVerzi($id_dokumentu)
+    public function vytvoritDalsiVerzi($id_dokumentu, $upravil)
     {
         $akt = $this->aktualniVerze($id_dokumentu);
         $pom2 = $this->nactiVerzi($id_dokumentu, $akt);
@@ -71,7 +72,9 @@ class Versions extends Nette\Object
             'akt_etapa' => $pom2->akt_etapa,
             'verze' => $akt + 1,
             'datum_vytvoreni' => date('Y-m-d'),
+            'upravil_id' => $upravil, 
         ));
+        $this->dokumenty->zrusFinalizaci($id_dokumentu);
         return $pom;
     }
     
@@ -104,7 +107,7 @@ class Versions extends Nette\Object
     }
     
     public function pridejPripominku($text, $id_verze){
-        $pom = $this->database->table('Propominky')->insert(array(
+        $pom = $this->database->table('Pripominky')->insert(array(
             'text' => $text,
             'verze_id' => $id_verze,
         ));

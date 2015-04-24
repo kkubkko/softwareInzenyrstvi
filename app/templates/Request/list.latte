@@ -63,7 +63,7 @@
                               <div class="widget">
                                   <div class="widget-title">
                                       <div class="icon"><i class="icon20 i-vcard"></i></div> 
-                                      <h4>Odmitnute poptávky</h4>
+                                      <h4>Zpracovane poptávky</h4>
                                       <a href="#" class="minimize"></a>
                                   </div><!-- End .widget-title -->
 
@@ -86,7 +86,7 @@
                                               <td>{$demand->datum}</td>
                                               <td>{$demand->stav}</td>
                                               {if $demand->stav != 'čeká na posouzení'}
-                                                  <td>{$demand->datum}</td>
+                                                  <td>{$demand->dat_zmeny}</td>
                                               {else}
                                                   <td>-</td>
                                               {/if}
