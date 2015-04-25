@@ -25,7 +25,7 @@ abstract class BasePresenter extends Nette\Application\UI\Presenter
         
         if ($this->getUser()->isLoggedIn()) {									//kontrola přihlášení uživatele
             
-            $this->user_role = $this->getUser()->getIdentity()->getId();     //TOTO VYPÍŠE POUZE (ASI DO ARRAYE) IDČKA TĚCH ROLÍ CO MÁ
+            $this->user_role = $this->getUser()->getIdentity()->getRoles();     //TOTO VYPÍŠE POUZE (ASI DO ARRAYE) IDČKA TĚCH ROLÍ CO MÁ
             //$this->user_name = $this->getUser()->identity->data->jmeno;
             
             $this->template->user_role = $this->user_role;
