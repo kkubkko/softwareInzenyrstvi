@@ -1,0 +1,15 @@
+{* Latte template *}
+
+{block content}
+
+
+<p>
+	<h3>Projekty :</h3>
+		{foreach $projekty as $projekt}
+			<br>Projekt : {$projekt->popis}		{if $projekt->etapa == 'zahájení'}
+                                                    -> Projekt ještě nebyl zahájen
+                                                {else}    
+                                                    <a href="{link Version:version, $projekt->dokument_id}">Dokument k projektu</a>
+                                                {/if}
+		{/foreach}
+</p>	

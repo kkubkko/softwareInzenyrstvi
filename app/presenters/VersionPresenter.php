@@ -22,6 +22,8 @@ class VersionPresenter extends BasePresenter
     public $pozadavky;
     /** @var \App\Model\Projects @inject */
     public $projekty;
+	/** @var \App\Model\Users @inject */
+    public $users;
     /** @var Nette\Database\Context */
     private $database;
 
@@ -169,6 +171,20 @@ class VersionPresenter extends BasePresenter
         if (!$pom) {
             $this->setView('notFound');
         } else {
+			
+			if ($this->user->isInRole('zákazník')) {
+				$maPravo = FALSE;
+				$projekty = $this->users->vratProjektyZakaznika($this->user->getIdentity()->getId());
+				foreach ($projekty as $projekt) {
+					if ($projekt->dokument_id == $id_dokument) {
+						$maPravo = TRUE;
+					}
+				}
+				if ($maPravo == FALSE) {
+					$this->setView('notAllowed');
+				}
+			}
+			
             $this->id_dok = $id_dokument;
             if (isset($verze) && $verze <= $pom->aktualni_verze && $verze > 0){
                 $this['versionForm']->setDefaults(array(
