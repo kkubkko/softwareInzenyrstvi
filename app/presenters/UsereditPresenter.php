@@ -275,6 +275,19 @@ class UsereditPresenter extends BasePresenter
 		}
 		
     }
+	
+	public function renderUsersProjectList($user_id)
+    {
+		$this->template->isCustomer = FALSE;
+		
+        $user = $this->users->vratUser($user_id);
+		
+		$projekty = $this->users->vratProjektyZakaznika($user_id);
+		$this->template->projekty = $projekty;
+		
+		$this->template->uzivatel = $user;
+	
+    }
 
 	public function actionNewEmployee() {
 		
