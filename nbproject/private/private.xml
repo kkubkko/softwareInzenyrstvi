@@ -3,33 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/xampp/htdocs/swi/app/presenters/HomepagePresenter.php</file>
-            <file>file:/C:/xampp/htdocs/swi/app/presenters/BasePresenter.php</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/Project/projects.latte</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/Homepage/default.latte</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/Useredit/default.latte</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/header.latte</file>
-            <file>file:/C:/xampp/htdocs/swi/app/model/Requests.php</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/@layout.latte</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/menu.latte</file>
+            <file>file:/C:/xampp/htdocs/swi/app/templates/Team/addTeam.latte</file>
             <file>file:/C:/xampp/htdocs/swi/app/templates/Project/editProject.latte</file>
-            <file>file:/C:/xampp/htdocs/swi/app/presenters/RequestPresenter.php</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/Useredit/usersList.latte</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/Useredit/detail.latte</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/Request/list.latte</file>
-=======
-            <file>file:/C:/xampp/htdocs/SWI/app/presenters/VersionPresenter.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/presenters/ProjectPresenter.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/templates/Version/editRequest.latte</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/templates/Version/version.latte</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/presenters/RequestPresenter.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Documents.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Projects.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/templates/Homepage/default.latte</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Requests.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Versions.php</file>
->>>>>>> e1c067f0e353b46285f9a2e25056e3e5e073cf54
+            <file>file:/C:/xampp/htdocs/swi/app/templates/Team/detail.latte</file>
+            <file>file:/C:/xampp/htdocs/swi/app/templates/components/form.latte</file>
+            <file>file:/C:/xampp/htdocs/swi/app/templates/Version/version.latte</file>
+            <file>file:/C:/xampp/htdocs/swi/app/templates/Request/addDemand.latte</file>
         </group>
     </open-files>
 </project-private>
