@@ -15,7 +15,8 @@
                                         <span class="icon"><i class="icon20   i-pencil-5"></i></span>
                                         <span class="txt"> Domů </span>
                                     </a>
-                                </li>
+                                </li>   
+                                {if (in_array("zákazník",$user_role))} <!-- Zákazník -->
                                 <li>
                                     <a href="{link Project:projects}">
                                         <span class="icon"><i class="icon20  i-tag"></i></span>
@@ -23,11 +24,44 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{link Request:list}">
+                                    <a href="{link Request:services}">
                                         <span class="icon"><i class="icon20  i-tag"></i></span>
-                                        <span class="txt"> Správa poptávek </span>
+                                        <span class="txt"> Seznam služeb </span>
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{link Request:userDemand}">
+                                        <span class="icon"><i class="icon20  i-tag"></i></span>
+                                        <span class="txt"> Seznam poptávek </span>
+                                    </a>
+                                </li>
+                                {elseif ((in_array("zaměstnanec",$user_role)) || (in_array("admin",$user_role)) || (in_array("manažer",$user_role)) || (in_array("architekt",$user_role)) || (in_array("projektant",$user_role)) || (in_array("stavbyvedoucí",$user_role)))} <!-- Zaměstnanec -->
+                                <li>
+                                    <a href="{link Project:projects}">
+                                        <span class="icon"><i class="icon20  i-tag"></i></span>
+                                        <span class="txt"> Správa projektů </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{link Request:services}">
+                                        <span class="icon"><i class="icon20  i-tag"></i></span>
+                                        <span class="txt"> Seznam služeb </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{link Request:userDemand}">
+                                        <span class="icon"><i class="icon20  i-tag"></i></span>
+                                        <span class="txt"> Seznam poptávek uživatele</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{link Request:list}">
+                                        <span class="icon"><i class="icon20  i-tag"></i></span>
+                                        <span class="txt"> Seznam poptávek </span>
+                                    </a>
+                                </li>
+                                {/if}
+                                {if ((in_array("manažer",$user_role)) || (in_array("admin",$user_role)))} 
                                 <li>
                                     <a href="{link Useredit:usersList}">
                                         <span class="icon"><i class="icon20 i-user"></i></span>
@@ -40,12 +74,7 @@
                                         <span class="txt"> Správa týmů </span>
                                     </a>
                                 </li>
-                                
-                                
-                                {*if ($user_role==2)/*}
-                                {*elseif ($user_role==3)/*}
-
-                                {*/if/*}
+                                {/if}
                             {else}
                                 <li>
                                     <a href="{link Homepage:default}">
