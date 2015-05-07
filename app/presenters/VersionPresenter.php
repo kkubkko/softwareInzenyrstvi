@@ -5,6 +5,7 @@ namespace App\Presenters;
 
 use Nette,
     Nette\Application\UI\Form,
+	PdfResponse\PdfResponse,
     App\Model;
 
 /**
@@ -31,9 +32,9 @@ class VersionPresenter extends BasePresenter
     private $ver;
     private $aktualni;
     //private $poz;
-    
-    
-    protected function startup()
+
+
+	protected function startup()
     {
         parent::startup();         
     }
@@ -200,7 +201,7 @@ class VersionPresenter extends BasePresenter
             $this->aktualni = $pom->aktualni_verze;
         }
     }
-    
+	
     public function actionAddPrompt($id_verze)
     {
         if ($this->user->isLoggedIn()) {
@@ -276,11 +277,14 @@ class VersionPresenter extends BasePresenter
         } else {
             $this->template->aktualni = false; 
         }
+
         $this->template->projekt = $proj;
         $this->template->pripominky = $this->verze->seznamPripominekVerzeDoc($id_dokument, $this->ver);
         $this->template->upravy = $this->verze->seznamUpravVerzeDoc($id_dokument, $this->ver);
         $prac_verze = $this->verze->nactiVerzi($id_dokument, $this->ver);
         $this->template->verze = $prac_verze;
+		$this->template->ver = $this->ver;
+		$this->template->id_dokument = $id_dokument;
         $jina_prom = $this->pozadavky->vratPozadavkyProVerzi($prac_verze->ID);
         //$this->poz = $jina_prom;
         if ($jina_prom) {
@@ -290,6 +294,54 @@ class VersionPresenter extends BasePresenter
             $this->template->pozadavky = null;
             $this->template->sluzby = $this->pozadavky->vratSeznamSluzebProPozadavky(-1);;
         }
+		
     }
 
+	function actionPdf($id_dokument, $verze) {
+		
+		$proj = $this->dokumenty->vratProjektDokumentu($id_dokument);
+		
+		$html = "<b>Verze dokumentu : $verze</b> pro projekt <b>".$proj->popis."</b>";
+		
+		$prac_verze = $this->verze->nactiVerzi($id_dokument, $verze);
+		$pozadavky = $this->pozadavky->vratPozadavkyProVerzi($prac_verze->ID);
+		
+		$html = $html."<br><br><b>Speciální požadavky</b>";
+		if (isset($pozadavky) && $pozadavky != NULL) {
+			$html = $html."<br>".$pozadavky->specialni->text;
+		} else {
+			$html = $html."<br>Žádné speciální požadavky";
+		}
+		
+		$pripominky = $this->verze->seznamPripominekVerzeDoc($id_dokument, $verze);
+		$html = $html."<br><br><b>Připomínky k verzi</b>";
+        foreach ($pripominky as $pripominka) {
+			$html = $html."<br> Připomínka ".$pripominka->ID." : ".$pripominka->text;
+		}
+		if (count($pripominky) == 0) {
+			$html = $html."<br>Žádné přípomínky k této verzi.";
+		}
+        
+		if (isset($pozadavky) && $pozadavky != NULL) {
+		$sluzby = $this->pozadavky->vratSeznamSluzebProPozadavky($pozadavky->ID);
+		$html = $html."<br><br><b>Služby</b>";
+        foreach ($sluzby as $sluzba) {
+			$html = $html."<br>".$sluzba->sluzba->nazev." : ".$sluzba->sluzba->popis;
+		}
+		}
+                                                                                                  
+        $upravy = $this->verze->seznamUpravVerzeDoc($id_dokument, $verze);                          
+		$html = $html."<br><br><b>Túto verzi upravil: ".$prac_verze->upravil->jmeno."</b>";
+		foreach ($upravy as $uprava) {
+			$html = $html."<br>Popis úpravy: ".$uprava->text;
+		}
+        
+		$html = $html."<br><br><br><br><br><br><br><br><i>Tento dokument byl automaticky vygenerován robotem.</i>";
+                                            
+                                           
+		
+        // Jako 1. parament PDFResponse můžeme předat html v UTF8 nebo objekt implementující rozhraní ITemplate
+		
+        $this->sendResponse(new PDFResponse($html));
+    }
 }

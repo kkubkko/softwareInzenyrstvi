@@ -60,7 +60,7 @@
                                                     <a href="{link finalize!, $verze->ID}">Uzavrit</a>
                                                 {/if} 
                                             {/if}
-
+											
                                             <h2>Upravy</h2>
                                             <p>
                                             <b>Upravil: </b>{$verze->upravil->jmeno}<br />    
@@ -88,7 +88,8 @@
                                             {if $aktualni}    
                                                 <a href="{link Version:addPrompt, $verze->ID}">Pridat pripominku</a>
                                             {/if}
-
+											
+											<br><br><a href="{link Version:Pdf, $id_dokument, $ver}">Vygeneruj PDF o teto verzi</a>
                                         
                                     </div><!-- End .widget-content -->
                                 </div><!-- End .widget -->
