@@ -65,19 +65,16 @@
                             </div><!-- End .span6  -->  
                             {if $user->isInRole('admin') || $user->isInRole('manažer')}
                                 {if $demand->stav != 'odmitnuto' && $demand->stav != 'přijato'}
-                                <a href="{link odmitnout!, $demand->ID}">Odmitnout</a>
+                                <a class="btn" href="{link odmitnout!, $demand->ID}">Odmitnout</a>&nbsp;
                                 {/if}
                                 {if $demand->stav == 'přijato'}
-                                <a href="{link dokument!, $demand->ID}">Dokument</a>    
+                                <a class="btn" href="{link dokument!, $demand->ID}">Dokument</a>    &nbsp;
                                 {/if}
-                                <br />
-                                <a href="{link Request:list}">Zpět na seznam</a> 
+                                <a class="btn" href="{link Request:list}">Zpět na seznam</a> &nbsp;
                             {else}
-                                <br />
-                                <a href="{link Request:userDemand}">Zpět na seznam</a>  
+                                <a class="btn" href="{link Request:userDemand}">Zpět na seznam</a>  &nbsp;
                             {/if}
-                            <br />
-                            <a href="{link Homepage:default}">Domu</a>
+                            <a class="btn" href="{link Homepage:default}">Domů</a>&nbsp;
                        </div>
                                         
                                         

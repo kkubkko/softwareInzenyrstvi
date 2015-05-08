@@ -54,10 +54,10 @@
                                             </table>
                                             {if $aktualni}
                                                 {if !isset($pozadavky)}
-                                                    <a href="{link Request:addDemandProject, $projekt->ID}">Pridat poptavku</a>
+                                                    <a class="btn" href="{link Request:addDemandProject, $projekt->ID}">Pridat poptavku</a>
                                                 {else}
-                                                    <a href="{link Version:editRequest, $verze->ID}">Upravit pozadavky</a><br />
-                                                    <a href="{link finalize!, $verze->ID}">Uzavrit</a>
+                                                    <a class="btn" href="{link Version:editRequest, $verze->ID}">Upravit pozadavky</a>&nbsp;
+                                                    <a class="btn" href="{link finalize!, $verze->ID}">Uzavrit</a>
                                                 {/if} 
                                             {/if}
 											
@@ -86,10 +86,10 @@
                                                 </tbody>    
                                             </table>
                                             {if $aktualni}    
-                                                <a href="{link Version:addPrompt, $verze->ID}">Pridat pripominku</a>
+                                                <a class="btn" href="{link Version:addPrompt, $verze->ID}">Pridat pripominku</a>
                                             {/if}
 											
-											<br><br><a href="{link Version:Pdf, $id_dokument, $ver}">Vygeneruj PDF o teto verzi</a>
+					<br><br><a class="btn" href="{link Version:Pdf, $id_dokument, $ver}">Vygeneruj PDF o teto verzi</a>
                                         
                                     </div><!-- End .widget-content -->
                                 </div><!-- End .widget -->
@@ -98,7 +98,7 @@
                        </div>
                                         
                                         
-					
+		<a class="btn" href="javascript:history.back()">Zpět</a>			
                 </div><!-- End .row-fluid  -->
 
             </div> <!-- End .container-fluid  -->
