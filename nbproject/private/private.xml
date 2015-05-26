@@ -3,59 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
-            <file>file:/C:/xampp/htdocs/SWI/app/presenters/VersionPresenter.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/presenters/ProjectPresenter.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/presenters/RequestPresenter.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Documents.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Projects.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Requests.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/UserManager.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Users.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Versions.php</file>
-            <file>file:/C:/xampp/htdocs/SWI/app/model/Teams.php</file>
-=======
-<<<<<<< HEAD
-            <file>file:/C:/xampp/htdocs/swi/app/templates/Team/addTeam.latte</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/Project/editProject.latte</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/Team/detail.latte</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/components/form.latte</file>
+            <file>file:/C:/xampp/htdocs/swi/app/presenters/BasePresenter.php</file>
+            <file>file:/C:/xampp/htdocs/swi/app/templates/menu.latte</file>
+            <file>file:/C:/xampp/htdocs/swi/app/config/config.local.neon</file>
+            <file>file:/C:/xampp/htdocs/swi/app/templates/Homepage/default.latte</file>
+            <file>file:/C:/xampp/htdocs/swi/app/templates/Useredit/detail.latte</file>
+            <file>file:/C:/xampp/htdocs/swi/app/presenters/VersionPresenter.php</file>
             <file>file:/C:/xampp/htdocs/swi/app/templates/Version/version.latte</file>
-            <file>file:/C:/xampp/htdocs/swi/app/templates/Request/addDemand.latte</file>
-=======
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/model/Requests.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/model/Teams.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/model/Users.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Useredit/default.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/presenters/TeamPresenter.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/presenters/ErrorPresenter.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/config/config.neon</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Useredit/usersList.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Sign/default.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Project/editProject.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/presenters/BasePresenter.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/vendor/nette/application/src/Application/UI/Presenter.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/presenters/HomepagePresenter.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Request/list.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/presenters/RequestPresenter.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Request/detail.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/presenters/ProjectPresenter.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Useredit/newEmployee.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Project/addProject.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/presenters/SignPresenter.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Project/notAllowed.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/menu.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Project/projects.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/vendor/nette/security/src/Security/IIdentity.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/header.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/presenters/UsereditPresenter.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Team/detail.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/model/Documents.php</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Sign/in.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/templates/Homepage/default.latte</file>
-            <file>file:/Applications/XAMPP/htdocs/swi/sandbox/app/model/Projects.php</file>
->>>>>>> ad625c690981dd833a7e3736d838d889c50accd6
->>>>>>> 5c77df7d87588cc6e10711cd3d76075ab723fd81
         </group>
     </open-files>
 </project-private>
